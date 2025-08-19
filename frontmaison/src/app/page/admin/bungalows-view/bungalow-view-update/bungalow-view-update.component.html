@@ -1,0 +1,205 @@
+ <div class="modal-overlay">
+     <div class="modal-content">
+       <form [formGroup]="bungalowForm" (ngSubmit)="onSave()">
+         <!-- Header -->
+         <div class="header">
+           <div class="header-left">
+             <input formControlName="name" class="header-title-input" placeholder="Bungalow Name" />
+             <div class="header-info">
+               <input formControlName="price" class="price-input" placeholder="$0.00/night" />
+               <label class="popular-checkbox">
+                 <input type="checkbox" formControlName="popular" />
+                 Most Popular
+               </label>
+               <div class="rating">
+                 <input formControlName="rating" class="rating-input" placeholder="4.9/5" />
+               </div>
+             </div>
+           </div>
+           <button type="button" class="close-button" (click)="onClose()">
+             <fa-icon [icon]="faTimes" class="close-icon"></fa-icon>
+           </button>
+         </div>
+
+         <!-- Main Content -->
+         <div class="content">
+           <!-- Left Column: Gallery and Description -->
+           <div class="gallery-section">
+             <div class="gallery">
+               <!-- Main Image -->
+               <div class="main-image-container">
+                 <img
+                   [src]="bungalowImages[currentImageIndex]"
+                   [alt]="bungalowForm.get('name')?.value + ' - ' + imageCategories[currentImageIndex]"
+                   class="main-image"
+                 />
+                 <button type="button" class="nav-button prev-button" (click)="prevImage()">
+                   <fa-icon [icon]="faChevronLeft" class="nav-icon"></fa-icon>
+                 </button>
+                 <button type="button" class="nav-button next-button" (click)="nextImage()">
+                   <fa-icon [icon]="faChevronRight" class="nav-icon"></fa-icon>
+                 </button>
+                 <div class="image-counter">
+                   {{ currentImageIndex + 1 }} / {{ bungalowImages.length }}
+                 </div>
+                 <div class="image-category">
+                   {{ imageCategories[currentImageIndex] }}
+                 </div>
+               </div>
+
+               <!-- Image Upload -->
+               <div class="image-upload">
+                 <label for="image-upload" class="upload-button">
+                   <fa-icon [icon]="faUpload" class="mr-2"></fa-icon> Upload Image
+                 </label>
+                 <input id="image-upload" type="file" accept="image/*" (change)="handleImageUpload($event)" style="display: none;" />
+               </div>
+
+               <!-- Thumbnails -->
+               <div class="thumbnail-grid">
+                 <div *ngFor="let image of bungalowImages; let i = index" class="thumbnail-container">
+                   <img
+                     [src]="image"
+                     [alt]="bungalowForm.get('name')?.value + ' ' + imageCategories[i]"
+                     class="thumbnail"
+                     [ngClass]="i === currentImageIndex ? 'thumbnail-active' : ''"
+                     (click)="setImageIndex(i)"
+                   />
+                   <div class="thumbnail-label">{{ imageCategories[i] }}</div>
+                 </div>
+               </div>
+             </div>
+
+             <!-- Description -->
+             <div class="description-section">
+               <h3 class="section-title">About This Bungalow</h3>
+               <textarea formControlName="description" class="description-textarea" placeholder="Enter description"></textarea>
+             </div>
+           </div>
+
+           <!-- Right Column: Bungalow Information -->
+           <div class="info-section">
+             <!-- Quick Info -->
+             <div class="info-card">
+               <h3 class="section-title">Quick Info</h3>
+               <div class="info-grid">
+                 <div class="info-item">
+                   <label class="info-label"><fa-icon [icon]="faUsers" class="icon"></fa-icon> Capacity</label>
+                   <input formControlName="capacity" class="info-value-input" placeholder="Capacity" />
+                 </div>
+                 <div class="info-item">
+                   <label class="info-label"><fa-icon [icon]="faBed" class="icon"></fa-icon> Beds</label>
+                   <input formControlName="beds" class="info-value-input" placeholder="Beds" />
+                 </div>
+                 <div class="info-item">
+                   <label class="info-label"><fa-icon [icon]="faBath" class="icon"></fa-icon> Bathrooms</label>
+                   <input formControlName="baths" class="info-value-input" placeholder="Bathrooms" />
+                 </div>
+                 <div class="info-item">
+                   <label class="info-label"><fa-icon [icon]="faHome" class="icon"></fa-icon> Area</label>
+                   <input formControlName="area" class="info-value-input" placeholder="Area" />
+                 </div>
+               </div>
+             </div>
+
+             <!-- Features -->
+             <div class="info-card">
+               <h3 class="section-title">Features</h3>
+               <div class="feature-list">
+                 <div *ngFor="let feature of bungalowForm.get('features')?.value; let i = index" class="feature-item">
+                   <span class="feature-dot"></span>
+                   <input [formControl]="getTypedFormArrayControl('features', i)" class="list-item-input" placeholder="Enter feature" />
+                   <button type="button" class="delete-button" (click)="removeFormArrayItem('features', i)">
+                     <fa-icon [icon]="faTimes"></fa-icon>
+                   </button>
+                 </div>
+                 <button type="button" class="add-item-button" (click)="addFormArrayItem('features')">
+                   <fa-icon [icon]="faPlus" class="mr-2"></fa-icon> Add Feature
+                 </button>
+               </div>
+             </div>
+
+             <!-- Amenities -->
+             <div class="info-card">
+               <h3 class="section-title">Amenities</h3>
+               <div class="amenity-list">
+                 <div *ngFor="let amenity of bungalowForm.get('amenities')?.value; let i = index" class="amenity-item">
+                   <div class="amenity-icon-container">
+                     <fa-icon [icon]="getIcon(getAmenityControl(i, 'icon').value) || faQuestion"></fa-icon>
+                     <input [formControl]="getAmenityControl(i, 'icon')" class="icon-input" placeholder="Icon class (e.g., fa-solid fa-wifi)" />
+                   </div>
+                   <input [formControl]="getAmenityControl(i, 'name')" class="list-item-input" placeholder="Enter amenity name" />
+                   <label class="amenity-checkbox">
+                     <input type="checkbox" [formControl]="getAmenityControl(i, 'included')" />
+                     Included
+                   </label>
+                   <button type="button" class="delete-button" (click)="removeFormArrayItem('amenities', i)">
+                     <fa-icon [icon]="faTimes"></fa-icon>
+                   </button>
+                 </div>
+                 <button type="button" class="add-item-button" (click)="addFormArrayItem('amenities')">
+                   <fa-icon [icon]="faPlus" class="mr-2"></fa-icon> Add Amenity
+                 </button>
+               </div>
+             </div>
+
+             <!-- Check-in/Check-out -->
+             <div class="info-card">
+               <h3 class="section-title">Check-in & Check-out</h3>
+               <div class="checkinout-grid">
+                 <div class="checkinout-item">
+                   <label class="checkinout-label">Check-in:</label>
+                   <input formControlName="checkIn" class="checkinout-input" placeholder="Check-in time" />
+                 </div>
+                 <div class="checkinout-item">
+                   <label class="checkinout-label">Check-out:</label>
+                   <input formControlName="checkOut" class="checkinout-input" placeholder="Check-out time" />
+                 </div>
+               </div>
+             </div>
+
+             <!-- Location -->
+             <div class="info-card">
+               <h3 class="section-title">Location</h3>
+               <input formControlName="distance" class="location-distance-input" placeholder="Distance from main pool" />
+               <div class="location-list">
+                 <div *ngFor="let attraction of bungalowForm.get('nearbyAttractions')?.value; let i = index" class="location-item">
+                   <fa-icon [icon]="faMapPin" class="icon"></fa-icon>
+                   <input [formControl]="getTypedFormArrayControl('nearbyAttractions', i)" class="list-item-input" placeholder="Enter nearby attraction" />
+                   <button type="button" class="delete-button" (click)="removeFormArrayItem('nearbyAttractions', i)">
+                     <fa-icon [icon]="faTimes"></fa-icon>
+                   </button>
+                 </div>
+                 <button type="button" class="add-item-button" (click)="addFormArrayItem('nearbyAttractions')">
+                   <fa-icon [icon]="faPlus" class="mr-2"></fa-icon> Add Attraction
+                 </button>
+               </div>
+             </div>
+           </div>
+         </div>
+
+         <!-- Footer -->
+         <div class="footer">
+           <div class="house-rules">
+             <h4 class="section-title">House Rules</h4>
+             <div class="rules-grid">
+               <div *ngFor="let policy of bungalowForm.get('policies')?.value; let i = index" class="rule-item">
+                 <span class="dot"></span>
+                 <input [formControl]="getTypedFormArrayControl('policies', i)" class="list-item-input" placeholder="Enter policy" />
+                 <button type="button" class="delete-button" (click)="removeFormArrayItem('policies', i)">
+                   <fa-icon [icon]="faTimes"></fa-icon>
+                 </button>
+               </div>
+               <button type="button" class="add-item-button" (click)="addFormArrayItem('policies')">
+                 <fa-icon [icon]="faPlus" class="mr-2"></fa-icon> Add Policy
+               </button>
+             </div>
+           </div>
+           <div class="button-group">
+             <button type="submit" class="save-button">Save Changes</button>
+             <button type="button" class="close-gallery-button" (click)="onClose()">Close</button>
+           </div>
+         </div>
+       </form>
+     </div>
+   </div>

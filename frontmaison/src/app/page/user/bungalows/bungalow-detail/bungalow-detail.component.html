@@ -1,0 +1,122 @@
+<div class="modal-overlay" *ngIf="bungalow; else noBungalow">
+  <div class="modal-content">
+    <!-- Header -->
+    <div class="header">
+      <div>
+        <h1 class="bungalow-name">{{ bungalow.name || 'Unnamed Bungalow' }}</h1>
+        <div class="header-info">
+          <span class="bungalow-price">{{ bungalow.price != null ? (bungalow.price + 'dt') : 'Not specified' }}/night</span>
+          <span *ngIf="bungalow.popular" class="popular-badge">Most Popular</span>
+        </div>
+      </div>
+      <button class="close-button" (click)="closeDetails()">
+        <i class="fas fa-times close-icon"></i>
+      </button>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content">
+      <!-- Image Gallery -->
+      <div class="gallery">
+        <!-- Main Image -->
+        <div class="main-image-container">
+          <img
+            [src]="bungalowImages[currentImageIndex]"
+            [alt]="(bungalow.name || 'Bungalow') + ' - Image ' + (currentImageIndex + 1)"
+            class="main-image"
+          />
+          <button class="nav-button prev-button" (click)="prevImage()">
+            <i class="fas fa-chevron-left nav-icon"></i>
+          </button>
+          <button class="nav-button next-button" (click)="nextImage()">
+            <i class="fas fa-chevron-right nav-icon"></i>
+          </button>
+          <div class="image-counter">
+            {{ currentImageIndex + 1 }} / {{ bungalowImages.length }}
+          </div>
+        </div>
+
+        <!-- Thumbnails -->
+        <div class="thumbnail-grid">
+          <div *ngFor="let image of bungalowImages; let i = index" class="thumbnail-container">
+            <img
+              [src]="image"
+              [alt]="(bungalow.name || 'Bungalow') + ' Image ' + (i + 1)"
+              class="thumbnail"
+              [ngClass]="i === currentImageIndex ? 'thumbnail-active' : ''"
+              (click)="setImageIndex(i)"
+            />
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="description-section">
+          <h3 class="section-title">About This Bungalow</h3>
+          <p class="description">{{ bungalow.description || 'No description available' }}</p>
+        </div>
+      </div>
+
+      <!-- Bungalow Information -->
+      <div class="info">
+        <!-- Quick Info -->
+        <div class="info-card">
+          <h3 class="section-title">Quick Info</h3>
+          <div class="info-list">
+            <div class="info-item">
+              <div class="info-label">
+                <i class="fas fa-users icon"></i>
+                Max Occupancy
+              </div>
+              <span class="info-value">{{ bungalow.maxOccupancy != null ? bungalow.maxOccupancy : 'Not specified' }}</span>
+            </div>
+            <div class="info-item">
+              <div class="info-label">
+                <i class="fas fa-bed icon"></i>
+                Beds
+              </div>
+              <span class="info-value">{{ bungalow.beds != null ? bungalow.beds : 'Not specified' }}</span>
+            </div>
+            <div class="info-item">
+              <div class="info-label">
+                <i class="fas fa-bath icon"></i>
+                Baths
+              </div>
+              <span class="info-value">{{ bungalow.baths != null ? bungalow.baths : 'Not specified' }}</span>
+            </div>
+            <div class="info-item">
+              <div class="info-label">
+                <i class="fas fa-home icon"></i>
+                Area
+              </div>
+              <span class="info-value">{{ bungalow.area || 'Not specified' }} m²</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <div class="house-rules">
+        <h4 class="section-title">Availability</h4>
+        <div class="rules-grid">
+          <p class="rule-item">
+            • {{ bungalow.isAvailable ? 'Yes' : 'No' }}
+          </p>
+        </div>
+      </div>
+      <button class="close-gallery-button" (click)="closeDetails()">
+        Close Gallery
+      </button>
+    </div>
+  </div>
+</div>
+
+<ng-template #noBungalow>
+  <div class="no-bungalow-message">
+    <p>No bungalow details available.</p>
+    <button class="close-button" (click)="closeDetails()" aria-label="Close">
+      <i class="fas fa-times close-icon"></i>
+    </button>
+  </div>
+</ng-template>

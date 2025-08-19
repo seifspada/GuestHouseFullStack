@@ -1,0 +1,197 @@
+<div class="service-form-container">
+  <div class="form-header">
+    <h2>{{ service ? 'Edit Service' : 'Add New Service' }}</h2>
+    <button (click)="onCancel()" class="close-button">
+      <fa-icon [icon]="faTimes"></fa-icon>
+    </button>
+  </div>
+
+  <form [formGroup]="serviceForm" (ngSubmit)="onSubmit()" class="service-form" [class.disabled]="isSubmitting">
+    <div class="form-group">
+      <label for="name">Service Name *</label>
+      <input 
+        type="text" 
+        id="name" 
+        formControlName="name" 
+        placeholder="Enter service name"
+        [class.invalid]="submitted && serviceForm.get('name')?.invalid"
+      >
+      <div *ngIf="submitted && serviceForm.get('name')?.invalid" class="error-message">
+        <span *ngIf="serviceForm.get('name')?.errors?.['required']">Name is required</span>
+        <span *ngIf="serviceForm.get('name')?.errors?.['minlength']">Name must be at least 3 characters</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="description">Description *</label>
+      <textarea 
+        id="description" 
+        formControlName="description" 
+        rows="4"
+        placeholder="Enter detailed description of the service"
+        [class.invalid]="submitted && serviceForm.get('description')?.invalid"
+      ></textarea>
+      <div *ngIf="submitted && serviceForm.get('description')?.invalid" class="error-message">
+        <span *ngIf="serviceForm.get('description')?.errors?.['required']">Description is required</span>
+        <span *ngIf="serviceForm.get('description')?.errors?.['minlength']">Description must be at least 10 characters</span>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="type">Service Type *</label>
+        <select id="type" formControlName="type" [class.invalid]="submitted && serviceForm.get('type')?.invalid">
+          <option value="" disabled selected>Select type</option>
+          <option *ngFor="let type of ServiceType | keyvalue" [value]="type.value">
+            {{ getServiceDisplayName(type.value) }}
+          </option>
+        </select>
+        <div *ngIf="submitted && serviceForm.get('type')?.invalid" class="error-message">
+          <span *ngIf="serviceForm.get('type')?.errors?.['required']">Type is required</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="location">Location *</label>
+        <select 
+          id="location" 
+          formControlName="location"
+          [class.invalid]="submitted && serviceForm.get('location')?.invalid"
+        >
+          <option value="" disabled selected>Select location</option>
+          <option *ngFor="let loc of Location | keyvalue" [value]="loc.value">
+            {{ getLocationDisplayName(loc.value) }}
+          </option>
+        </select>
+        <div *ngIf="submitted && serviceForm.get('location')?.invalid" class="error-message">
+          Location is required
+        </div>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="price">Price (€) *</label>
+        <input 
+          type="number" 
+          id="price" 
+          formControlName="price" 
+          min="0"
+          [class.invalid]="submitted && serviceForm.get('price')?.invalid"
+        >
+        <div *ngIf="submitted && serviceForm.get('price')?.invalid" class="error-message">
+          <span *ngIf="serviceForm.get('price')?.errors?.['required']">Price is required</span>
+          <span *ngIf="serviceForm.get('price')?.errors?.['min']">Price must be positive</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="minAge">Minimum Age *</label>
+        <input 
+          type="number" 
+          id="minAge" 
+          formControlName="minAge" 
+          min="1" 
+          max="120"
+          [class.invalid]="submitted && serviceForm.get('minAge')?.invalid"
+        >
+        <div *ngIf="submitted && serviceForm.get('minAge')?.invalid" class="error-message">
+          <span *ngIf="serviceForm.get('minAge')?.errors?.['required']">Minimum age is required</span>
+          <span *ngIf="serviceForm.get('minAge')?.errors?.['min']">Minimum age must be at least 1</span>
+          <span *ngIf="serviceForm.get('minAge')?.errors?.['max']">Minimum age cannot exceed 120</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+        <label for="start Time">Hours</label>
+       <input 
+  type="text" 
+  id="startTime" 
+  formControlName="startTime" 
+  placeholder="start time"
+>
+
+
+       <input 
+  type="text" 
+  id="endTime" 
+  formControlName="endTime" 
+  placeholder="end time"
+>
+
+      </div>
+
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="duration">Duration</label>
+        <input 
+          type="text" 
+          id="duration" 
+          formControlName="duration" 
+          placeholder="e.g., 2 hours"
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="minParticipants">Minimum Participants</label>
+        <input 
+          type="number" 
+          id="minParticipants" 
+          formControlName="minParticipants" 
+          min="1" 
+          max="30"
+          [class.invalid]="submitted && serviceForm.get('minParticipants')?.invalid"
+        >
+        <div *ngIf="submitted && serviceForm.get('minParticipants')?.invalid" class="error-message">
+          Must be between 1 and 30
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Images</label>
+      <div class="image-upload-container">
+        <label for="imageUpload" class="upload-button">
+          <fa-icon [icon]="faUpload"></fa-icon> Upload Images
+          <input 
+            type="file" 
+            id="imageUpload" 
+            (change)="onImagesSelected($event)" 
+            multiple 
+            accept="image/*"
+            style="display: none;"
+          >
+        </label>
+        <div *ngIf="selectedImageFiles.length > 0" class="image-preview">
+          <span>{{ selectedImageFiles.length }} file(s) selected</span>
+        </div>
+        <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+      </div>
+    </div>
+
+    <div class="form-group checkbox-group">
+      <input 
+        type="checkbox" 
+        id="isActive" 
+        formControlName="isActive"
+      >
+      <label for="isActive">Active Service</label>
+    </div>
+
+    <div *ngIf="errorMessage" class="form-error-message">
+      {{ errorMessage }}
+    </div>
+
+    <div class="form-actions">
+      <button type="button" (click)="onCancel()" class="cancel-button">
+        <fa-icon [icon]="faChevronLeft"></fa-icon> Cancel
+      </button>
+      <button type="submit" class="submit-button" [disabled]="isSubmitting">
+        <span *ngIf="!isSubmitting">Save <fa-icon [icon]="faChevronRight"></fa-icon></span>
+        <span *ngIf="isSubmitting">Saving...</span>
+      </button>
+    </div>
+  </form>
+</div>

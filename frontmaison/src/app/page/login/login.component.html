@@ -1,0 +1,235 @@
+<div class="parenDiv">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6 d-none d-md-block">
+<img src="assets/logos/36625.png" alt="Logo" />
+      </div>
+      <div class="col-md-6 col-lg-5">
+        <div class="form-container">
+          <div class="form-header">
+            <div class="toggle-buttons">
+              <button
+                id="login-toggle"
+                class="toggle-button"
+                [ngClass]="activeForm === 'Login' ? 'active' : ''"
+                (click)="changeView('Login')"
+              >
+                Login
+              </button>
+              <button
+                id="signup-toggle"
+                class="toggle-button"
+                [ngClass]="activeForm === 'Signup' ? 'active' : ''"
+                (click)="changeView('Signup')"
+              >
+                Sign Up
+              </button>
+              <div
+                class="slider"
+                [ngClass]="activeForm === 'Login' ? 'loginAnimation' : 'signupAnimation'"
+              ></div>
+            </div>
+          </div>
+          <div class="form-body">
+            <form
+              id="login-form"
+              #loginForm="ngForm"
+              [class]="activeForm === 'Login' ? 'active-form' : ''"
+              (ngSubmit)="onLogin()"
+            >
+              <h2 class="text-center mb-4">Welcome Back</h2>
+              <div class="form-group input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">
+                    <i class="fa fa-envelope"></i>
+                  </span>
+                </div>
+                <input
+                  type="email"
+                  name="email"
+                  #email="ngModel"
+                  [(ngModel)]="loginObj.email"
+                  id="loginEmail"
+                  class="form-control"
+                  placeholder="Email"
+                  required
+                  email
+                />
+                @if (email.touched && email.errors) {
+                  <div class="text-danger">
+                    @if (email.errors['required']) {
+                      <span>Email is required</span>
+                    }
+                    @if (email.errors['email']) {
+                      <span>Invalid email format</span>
+                    }
+                  </div>
+                }
+              </div>
+              <div class="form-group input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">
+                    <i class="fa fa-lock"></i>
+                  </span>
+                </div>
+                <input
+                  type="password"
+                  name="password"
+                  #password="ngModel"
+                  [(ngModel)]="loginObj.password"
+                  id="loginPassword"
+                  class="form-control"
+                  placeholder="Password"
+                  required
+                />
+                @if (password.touched && password.errors) {
+                  <div class="text-danger">
+                    @if (password.errors['required']) {
+                      <span>Password is required</span>
+                    }
+                  </div>
+                }
+              </div>
+              
+              <button type="submit" [disabled]="loginForm.invalid" class="btn btn-primary w-100">
+                <i class="fas fa-sign-in-alt me-2"></i>Login
+              </button>
+            </form>
+            <form
+              id="signup-form"
+              #signupForm="ngForm"
+              [class]="activeForm === 'Signup' ? 'active-form' : ''"
+              (ngSubmit)="onRegister()"
+            >
+              <h2 class="text-center mb-4">Create an Account</h2>
+              <div class="form-group input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="fa fa-user"></i></span>
+                </div>
+                <input
+                  type="text"
+                  name="name"
+                  #name="ngModel"
+                  [(ngModel)]="registerObj.name"
+                  class="form-control"
+                  placeholder="Full Name"
+                  required
+                />
+                @if (name.touched && name.errors) {
+                  <div class="text-danger">
+                    @if (name.errors['required']) {
+                      <span>Name is required</span>
+                    }
+                  </div>
+                }
+              </div>
+              <div class="form-group input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="fa fa-envelope"></i></span>
+                </div>
+                <input
+                  type="email"
+                  name="email"
+                  #email="ngModel"
+                  [(ngModel)]="registerObj.email"
+                  class="form-control"
+                  placeholder="Email"
+                  required
+                  email
+                />
+                @if (email.touched && email.errors) {
+                  <div class="text-danger">
+                    @if (email.errors['required']) {
+                      <span>Email is required</span>
+                    }
+                    @if (email.errors['email']) {
+                      <span>Invalid email format</span>
+                    }
+                  </div>
+                }
+              </div>
+              <div class="form-group input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="fa fa-lock"></i></span>
+                </div>
+                <input
+                  type="password"
+                  name="password"
+                  #password="ngModel"
+                  [(ngModel)]="registerObj.password"
+                  class="form-control"
+                  placeholder="Password"
+                  required
+                  minlength="8"
+                />
+                @if (password.touched && password.errors) {
+                  <div class="text-danger">
+                    @if (password.errors['required']) {
+                      <span>Password is required</span>
+                    }
+                    @if (password.errors['minlength']) {
+                      <span>Password must be at least 8 characters long</span>
+                    }
+                  </div>
+                }
+              </div>
+              <div class="form-group input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                </div>
+                <input
+                  type="date"
+                  name="dateNaissance"
+                  [(ngModel)]="registerObj.dateNaissance"
+                  class="form-control"
+                />
+              </div>
+              <div class="form-group input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="fa fa-map-marker"></i></span>
+                </div>
+                <input
+                  type="text"
+                  name="address"
+                  [(ngModel)]="registerObj.address"
+                  class="form-control"
+                  placeholder="Address"
+                />
+              </div>
+              <div class="form-group input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="fa fa-phone"></i></span>
+                </div>
+                <input
+                  type="tel"
+                  name="telephone"
+                  [(ngModel)]="registerObj.telephone"
+                  class="form-control"
+                  placeholder="Phone Number"
+                />
+              </div>
+              <div class="form-group input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="fa fa-user-tag"></i></span>
+                </div>
+                <select
+                  name="role"
+                  [(ngModel)]="registerObj.role"
+                  class="form-control"
+                >
+                  <option [ngValue]="undefined">Select role (optional)</option>
+                  <option value="admin">Admin</option>
+                  <option value="responsable">Responsable</option>
+                  <option value="user">User</option>
+                </select>
+              </div>
+              <button type="submit" [disabled]="signupForm.invalid" class="btn btn-success w-100">
+                <i class="fas fa-user-plus me-2"></i>Register
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

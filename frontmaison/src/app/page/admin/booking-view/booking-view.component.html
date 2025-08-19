@@ -1,0 +1,41 @@
+<div class="bookings-container">
+  <h1>Bookings</h1>
+  <table class="bookings-table">
+    <thead>
+      <tr>
+        <th>Guest Name</th>
+        <th>Bungalow</th>
+        <th>Check-In Date</th>
+        <th>Check-Out Date</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let booking of bookings">
+        <td>{{ booking.guestName }}</td>
+        <td>{{ booking.bungalowName }}</td>
+        <td>{{ booking.checkInDate | date }}</td>
+        <td>{{ booking.checkOutDate | date }}</td>
+        <td [ngClass]="{
+          'status-confirmed': booking.status === 'confirmed',
+          'status-pending': booking.status === 'pending',
+          'status-cancelled': booking.status === 'cancelled'
+        }">
+          {{ booking.status | titlecase }}
+        </td>
+  <td>
+  <button (click)="updateStatusToConfirmed(booking)"
+          [disabled]="booking.status === 'confirmed'">
+    Confirm
+  </button>
+
+  <button (click)="rejectBooking(booking)">
+    Cancel
+  </button>
+</td>
+
+      </tr>
+    </tbody>
+  </table>
+</div>

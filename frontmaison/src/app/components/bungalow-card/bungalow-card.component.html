@@ -1,0 +1,42 @@
+<div class="bungalow-card">
+  <div class="image-container">
+    <img [src]="getBungalowImage(bungalow)" [alt]="bungalow.name" class="bungalow-image" />
+    <span *ngIf="bungalow.popular" class="popular-badge">Most Popular</span>
+    <div class="price-tag">
+      <span class="price">{{ bungalow.price }}</span>
+      <span class="price-unit">/night</span>
+    </div>
+  </div>
+
+  <div class="card-header">
+    <h3 class="bungalow-title">{{ bungalow.name }}</h3>
+    <div class="info-grid">
+      <div class="info-item">
+        <i class="fas fa-users icon"></i>
+        {{ bungalow.maxOccupancy }}
+      </div>
+      <div class="info-item">
+        <i class="fas fa-bed icon"></i>
+        {{ bungalow.beds }}
+      </div>
+      <div class="info-item">
+        <i class="fas fa-bath icon"></i>
+        {{ bungalow.baths }}
+      </div>
+    </div>
+  </div>
+
+  <div class="card-content">
+    <div class="action-buttons">
+      <button class="view-details-button" (click)="viewDetails.emit(bungalow)">
+        View Details
+      </button>
+      <button class="update-button" (click)="update.emit(bungalow)">
+        <i class="fas fa-pencil-alt mr-2"></i> Update
+      </button>
+      <button class="delete-button" (click)="deleteBungalow(bungalow)">
+        <i class="fas fa-trash-alt mr-2"></i> Delete
+      </button>
+    </div>
+  </div>
+</div>

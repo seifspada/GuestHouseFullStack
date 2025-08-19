@@ -1,0 +1,44 @@
+<div class="services-container">
+  <div class="header">
+    <h1>Services Management</h1>
+    <div class="header-actions">
+      <button class="tracking-button">
+        <i class="fas fa-map-pin mr-2"></i> Live Tracking
+      </button>
+      <button class="add-button" (click)="openAddService()">
+        <i class="fas fa-plus mr-2"></i> Add Service
+      </button>
+    </div>
+  </div>
+
+
+  <!-- Mobile Services -->
+  <div class="section">
+    <h2 class="section-title">Mobile Services - Live Tracking</h2>
+
+    <div class="services-grid">
+      <!-- Loop through services and show cards -->
+      <app-service-card
+        *ngFor="let service of services"
+        [service]="service"
+        (viewDetails)="openServiceDetail($event)"
+        (update)="openUpdateService($event)"
+        (delete)="deleteService($event)">
+      </app-service-card>
+    </div>
+
+    <!-- Service Detail (only one instance, controlled by selectedService) -->
+  <app-service-detail
+      *ngIf="selectedService"
+      [service]="selectedService"
+      (close)="closeServiceDetail()">
+    </app-service-detail>
+
+    
+    <!-- Add Service Form -->
+    <app-service-view-add
+      *ngIf="selectedAddService"
+      (close)="closeAddService()">
+    </app-service-view-add>
+  </div>
+</div>

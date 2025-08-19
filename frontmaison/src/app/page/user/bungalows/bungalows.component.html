@@ -1,0 +1,142 @@
+<div class="page-wrapper">
+  <div class="container">
+    <div class="text-center section-margin-bottom">
+      <h1 class="section-title">Our Bungalows</h1>
+      <p class="description">
+        Experience luxury and comfort in our beautifully designed bungalows.
+        Each accommodation offers unique features and stunning views for an
+        unforgettable stay.
+      </p>
+    </div>
+
+    <!-- Error Display -->
+    <div *ngIf="error" class="error-message" [innerHTML]="error"></div>
+
+    <!-- Date Selection Section -->
+    <div class="availability-section">
+      <h2 class="availability-title">Check Availability</h2>
+      <div class="availability-form">
+        <div class="form-group">
+          <label for="checkin" class="form-label">
+            <i class="fas fa-calendar-alt icon"></i>
+            Check-in Date
+          </label>
+          <input
+            id="checkin"
+            type="date"
+            [(ngModel)]="checkInDate"
+            class="form-input"
+          />
+        </div>
+        <div class="form-group">
+          <label for="checkout" class="form-label">
+            <i class="fas fa-calendar-alt icon"></i>
+            Check-out Date
+          </label>
+          <input
+            id="checkout"
+            type="date"
+            [(ngModel)]="checkOutDate"
+            class="form-input"
+          />
+        </div>
+        <button class="search-button" (click)="handleSearch()">
+          <i class="fas fa-search icon"></i>
+          Check Availability
+        </button>
+      </div>
+      <div *ngIf="checkInDate && checkOutDate" class="availability-info">
+        <p>
+          Showing availability from <strong>{{ checkInDate }}</strong> to
+          <strong>{{ checkOutDate }}</strong>
+        </p>
+      </div>
+    </div>
+
+    <!-- Bungalows Grid -->
+    <div class="bungalows-grid">
+      <div *ngFor="let bungalow of filteredBungalows" class="bungalow-card">
+        <div class="image-container">
+          <img [src]="getBungalowImage(bungalow)" [alt]="bungalow.name || 'Bungalow Image'" class="bungalow-image" />
+          <span *ngIf="bungalow.popular" class="popular-badge">Most Popular</span>
+          <div class="price-tag">
+            <span class="price">{{ bungalow.price || 'N/A' }}</span>
+            <span class="price-unit">/night</span>
+          </div>
+        </div>
+
+        <div class="card-header">
+          <h3 class="bungalow-title">{{ bungalow.name || 'Unnamed Bungalow' }}</h3>
+          <div class="info-grid">
+            <div class="info-item">
+              <i class="fas fa-users icon"></i>
+              {{ bungalow.maxOccupancy || 'N/A' }}
+            </div>
+            <div class="info-item">
+              <i class="fas fa-bed icon"></i>
+              {{ bungalow.beds || 'N/A' }}
+            </div>
+            <div class="info-item">
+              <i class="fas fa-bath icon"></i>
+              {{ bungalow.baths || 'N/A' }}
+            </div>
+          </div>
+        </div>
+
+        <div class="card-content">
+          <div class="action-buttons">
+            <button class="view-details-button" (click)="openDetailModal(bungalow)">
+              View Details
+            </button>
+            <button
+              class="book-button"
+              (click)="openBookingModal(bungalow)"
+              [disabled]="isInvalidDateRange"
+            >
+              Book Now
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Amenities Section -->
+    <div class="amenities-section">
+      <h2 class="amenities-title">All Bungalows Include</h2>
+      <div class="amenities-grid">
+        <div *ngFor="let amenity of amenities" class="amenity-item">
+          <div class="amenity-icon">
+            <i [class]="amenity.icon"></i>
+          </div>
+          <span class="amenity-name">{{ amenity.name }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA Section -->
+    <div class="cta-section">
+      <h2 class="cta-title">Ready to Book Your Perfect Getaway?</h2>
+      <p class="cta-description">
+        Contact us directly for special packages and extended stay discounts.
+      </p>
+      <button class="contact-button">
+        Contact for Booking
+      </button>
+    </div>
+
+    <!-- Modals -->
+    <app-booking-modal
+      *ngIf="selectedBungalow"
+      [bungalow]="selectedBungalow"
+      [checkInDate]="checkInDate"
+      [checkOutDate]="checkOutDate"
+      (close)="closeBookingModal()"
+      (bookingComplete)="handleBookingComplete()"
+    ></app-booking-modal>
+    <app-bungalow-detail
+      *ngIf="selectedBungalowDetail"
+      [bungalow]="selectedBungalowDetail"
+      (close)="closeDetailModal()"
+    ></app-bungalow-detail>
+  </div>
+</div>

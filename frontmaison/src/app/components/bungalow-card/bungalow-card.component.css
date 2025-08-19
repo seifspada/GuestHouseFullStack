@@ -1,0 +1,222 @@
+/* bungalows-container.component.css */
+.bungalows-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+h1 {
+  font-size: 24px;
+  color: #333;
+}
+
+.add-button {
+  padding: 8px 16px;
+  background-color: #4ade80;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+}
+
+.add-button:hover {
+  background-color: #22c55e;
+}
+
+.bungalows-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: space-between;
+}
+
+.bungalow-card {
+  flex: 1 1 calc(33.33% - 14px); /* Three cards per row, accounting for gap */
+  
+  box-sizing: border-box;
+  background-color: #ffffff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s;
+}
+
+
+.bungalow-card:hover {
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+}
+
+.image-container {
+  position: relative;
+}
+
+.bungalow-image {
+  width: 100%;
+  height: 16rem;
+  object-fit: cover;
+}
+
+.popular-badge {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background-color: #98ECBA;
+  color: #203436;
+  padding: 0.25rem 0.5rem;
+  border-radius: 8px;
+  font-size: 0.75rem;
+}
+
+.price-tag {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 0.25rem 0.75rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.price {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #203436;
+}
+
+.price-unit {
+  font-size: 0.75rem;
+  color: #4B5563;
+}
+
+.card-header {
+  padding: 1rem;
+}
+
+.bungalow-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #203436;
+}
+
+.info-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  font-size: 0.875rem;
+  color: #4B5563;
+  margin-top: 0.5rem;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+}
+
+.info-item .icon {
+  height: 1rem;
+  width: 1rem;
+  margin-right: 0.25rem;
+}
+
+.card-content {
+  padding: 1rem;
+}
+
+.features-section {
+  margin-bottom: 1rem;
+}
+
+.features-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #203436;
+  margin-bottom: 0.5rem;
+}
+
+.features-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.feature-badge {
+  border: 1px solid #D1D5DB;
+  border-radius: 8px;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  color: #4B5563;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap; /* Allow buttons to wrap if needed */
+}
+
+.view-details-button {
+  flex: 1;
+  padding: 0.5rem 1rem;
+  border: 1px solid #98ECBA;
+  border-radius: 8px;
+  background: none;
+  color: #203436;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.view-details-button:hover {
+  background-color: #98ECBA;
+}
+
+.update-button {
+  flex: 1;
+  padding: 0.5rem 1rem;
+  border: 1px solid #98ECBA;
+  border-radius: 8px;
+  background: none;
+  color: #203436;
+  font-size: 0.875rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.update-button:hover {
+  background-color: #98ECBA;
+}
+
+.delete-button {
+  flex: 1;
+  padding: 0.5rem 1rem;
+  border: 1px solid #EF4444; /* Red border for delete */
+  border-radius: 8px;
+  background: none;
+  color: #203436;
+  font-size: 0.875rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.delete-button:hover {
+  background-color: #FECACA; /* Light red hover effect */
+}
+
+.update-button .mr-2,
+.delete-button .mr-2 {
+  margin-right: 0.5rem;
+}

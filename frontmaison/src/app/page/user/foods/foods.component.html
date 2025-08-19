@@ -1,0 +1,73 @@
+<div class="food-container">
+  <div *ngFor="let category of getCategories()" class="card">
+    
+    <!-- En-tête de catégorie -->
+    <div class="card-header">
+      <div class="card-header-content">
+        
+        <div class="category-info">
+          <div class="category-icon">{{ getCategoryIcon(category) }}</div>
+          <div>
+            <h2 class="category-title">{{ category }}</h2>
+            <p class="category-description">{{ getCategoryDescription(category) }}</p>
+          </div>
+        </div>
+        
+        <div class="category-time">
+          <i class="fas fa-clock"></i>
+          <span>{{ getCategoryTime(category) }}</span>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Contenu -->
+    <div class="card-content">
+      <div class="food-grid">
+
+        <div *ngFor="let food of getFoodsByCategory(category)" class="food-card">
+          
+          <!-- Image et prix -->
+          <div class="food-image-container">
+            <img
+              [src]="getFoodImage(food)"
+              [alt]="food.name"
+              class="food-image"
+            />
+            <span class="price">${{ food.price.toFixed(2) }}</span>
+          </div>
+
+          <!-- Infos plat -->
+          <div class="food-content">
+            <h3 class="food-title">{{ food.name }}</h3>
+            <p class="food-description">{{ food.description }}</p>
+
+            <!-- Niveau d'épice -->
+            <div class="spice-level">
+              <span class="label">Spice Level:</span>
+              <span *ngFor="let i of [0,1,2,3,4]" class="star">
+                <i class="fas fa-star" [ngClass]="{'filled': i < (food.spiceLevel || 0)}"></i>
+              </span>
+            </div>
+
+            <!-- Boutons -->
+            <div class="food-actions">
+              <button class="view-button" (click)="openFoodDetail(food)">
+                <i class="fas fa-eye mr-2"></i> View
+              </button>
+              
+              <app-food-details
+                *ngIf="showFoodDetails"
+                [foodId]="selectedFood?._id ?? null"
+                [food]="selectedFood"
+                (close)="closeFoodDetail()"
+              ></app-food-details>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>

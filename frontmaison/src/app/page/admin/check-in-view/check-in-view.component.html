@@ -1,0 +1,134 @@
+<div class="check-in-container">
+  <div class="header">
+    <h2 class="header-title">Check-In Management</h2>
+  </div>
+
+  <!-- Tab Navigation -->
+  <div class="tabs-container">
+    <button
+      class="tab-button"
+      [ngClass]="{ 'tab-active': activeTab === 'arriving' }"
+      (click)="setActiveTab('arriving')"
+    >
+      <i class="fas fa-clock tab-icon"></i>
+      Arriving Today ({{ arrivingCount }})
+    </button>
+    <button
+      class="tab-button"
+      [ngClass]="{ 'tab-active': activeTab === 'checked-in' }"
+      (click)="setActiveTab('checked-in')"
+    >
+      <i class="fas fa-check-circle tab-icon"></i>
+      Checked In ({{ checkedInCount }})
+    </button>
+  </div>
+
+  <!-- Check-In List -->
+  <div class="user-list">
+    <div class="user-card-content" *ngFor="let checkIn of filteredCheckIns">
+      <div class="user-grid">
+        <!-- User Information -->
+        <div class="user-info">
+          <div class="user-details">
+            <div class="detail-item">
+              <i class="fas fa-envelope detail-icon"></i>
+              {{ checkIn.bookingId.userId.email }}
+            </div>
+            <div class="detail-item">
+              <i class="fas fa-phone detail-icon"></i>
+              {{ checkIn.bookingId.userId.telephone }}
+            </div>
+            <div class="detail-item">
+              <i class="fas fa-user detail-icon"></i>
+              {{ checkIn.bookingId.numberOfAdults }} Adult(s)
+              <ng-container *ngIf="checkIn.bookingId.numberOfChildren > 0">
+                , {{ checkIn.bookingId.numberOfChildren }} Child(ren)
+              </ng-container>
+            </div>
+          </div>
+        </div>
+
+        <!-- Booking Information -->
+        <div class="booking-info">
+          <h4 class="section-title">Booking Details</h4>
+          <div class="booking-details">
+            <div class="detail-item">
+              <i class="fas fa-map-pin detail-icon"></i>
+              {{ checkIn.bookingId.bungalowId.name }}
+            </div>
+            <div class="detail-item">
+              <i class="fas fa-calendar detail-icon"></i>
+              {{ checkIn.bookingId.checkInDate | date:'mediumDate' }} - {{ checkIn.bookingId.checkOutDate | date:'mediumDate' }}
+            </div>
+            <div class="detail-item">
+              <strong>Total:</strong> ${{ checkIn.bookingId.totalPrice }}
+            </div>
+          </div>
+        </div>
+
+        <!-- Check-In Actions -->
+        <div class="check-in-actions">
+          <div class="action-form">
+            <div class="form-grid">
+              <div>
+                <label [for]="'arrival-' + checkIn._id" class="form-label">Arrival Time</label>
+                <input
+                  type="time"
+                  [id]="'arrival-' + checkIn._id"
+                  [(ngModel)]="checkInData.arrivalTime"
+                  class="form-input"
+                />
+              </div>
+              <div>
+                <label [for]="'parking-' + checkIn._id" class="form-label">Parking</label>
+                <input
+                  type="text"
+                  [id]="'parking-' + checkIn._id"
+                  placeholder="Spot #"
+                  [(ngModel)]="checkInData.parkingAssigned"
+                  class="form-input"
+                />
+              </div>
+            </div>
+
+            <div class="checkbox-group">
+              <div class="checkbox-item">
+                <input
+                  type="checkbox"
+                  [id]="'room-' + checkIn._id"
+                  [(ngModel)]="checkInData.roomReady"
+                  class="checkbox"
+                />
+                <label [for]="'room-' + checkIn._id" class="checkbox-label">Room Ready</label>
+              </div>
+              <div class="checkbox-item">
+                <input
+                  type="checkbox"
+                  [id]="'key-' + checkIn._id"
+                  [(ngModel)]="checkInData.keyIssued"
+                  class="checkbox"
+                />
+                <label [for]="'key-' + checkIn._id" class="checkbox-label">Key Issued</label>
+              </div>
+            </div>
+
+            <textarea
+              placeholder="Check-in notes (optional)..."
+              [(ngModel)]="checkInData.notes"
+              class="form-textarea"
+              rows="2"
+            ></textarea>
+
+            <div class="action-buttons">
+              <button (click)="handleCheckIn(checkIn._id)" class="confirm-button">
+                <i class="fas fa-check-circle button-icon"></i>
+                Confirm Check-In
+              </button>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

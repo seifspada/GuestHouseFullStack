@@ -1,0 +1,12 @@
+<div class="item-card">
+  <div class="item-image-container">
+    <img [src]="food.image" [alt]="food.name" class="item-image">
+    <span *ngIf="food.popular" class="badge">Popular</span>
+    <span class="price">{{ food.price }}</span>
+  </div>
+  <div class="item-content">
+    <h3 class="item-title">{{ food.name }}</h3>
+    <p class="item-description">{{ food.description }}</p>
+    <button class="button" (click)="onViewDetails()">View Details</button>
+  </div>
+</div>

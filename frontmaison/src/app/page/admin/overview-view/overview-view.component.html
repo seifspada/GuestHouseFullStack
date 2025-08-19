@@ -1,0 +1,64 @@
+<div class="overview-container">
+  <h1>Overview</h1>
+
+  <!-- Stats Cards -->
+  <div class="metrics-grid">
+    <div *ngFor="let metric of metrics" class="metric-card" [style.backgroundColor]="metric.color">
+      <i [class]="metric.icon"></i>
+      <div class="metric-content">
+        <p class="metric-title">{{ metric.title }}</p>
+        <p class="metric-value">{{ metric.value }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent Activity -->
+  <div class="recent-activity">
+    <!-- Pending Bookings -->
+    <div class="section-card">
+      <h2 class="section-title">
+        <i class="fas fa-clock mr-2"></i> Pending Bookings ({{ pendingBookings.length }})
+      </h2>
+      <div class="bookings-list">
+        <div *ngFor="let booking of pendingBookings | filterByStatus:'pending'" class="booking-item">
+          <div class="booking-details">
+            <p class="guest">{{ booking.guest }}</p>
+            <p class="details">{{ booking.bungalow }} • {{ booking.checkIn }} to {{ booking.checkOut }}</p>
+            <p class="details">{{ booking.persons }} guest(s) • ${{ booking.total }}</p>
+          </div>
+          <div class="booking-actions">
+            <button class="approve-button" (click)="handleBookingAction(booking.id, 'approve')">
+              <i class="fas fa-check-circle mr-1"></i> Approve
+            </button>
+            <button class="reject-button" (click)="handleBookingAction(booking.id, 'reject')">
+              <i class="fas fa-times-circle mr-1"></i> Reject
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Notifications -->
+    <div class="section-card">
+      <h2 class="section-title">
+        <i class="fas fa-bell mr-2"></i> Recent Notifications
+      </h2>
+      <div class="notifications-list">
+        <div *ngFor="let notification of notifications" class="notification-item" [ngClass]="{'urgent': notification.urgent}">
+          <div class="notification-content">
+            <i [ngClass]="{
+              'fas fa-calendar-alt': notification.type === 'booking',
+              'fas fa-tools': notification.type === 'maintenance',
+              'fas fa-star': notification.type === 'review'
+            }"></i>
+            <div>
+              <p class="message">{{ notification.message }}</p>
+              <p class="time">{{ notification.time }}</p>
+            </div>
+          </div>
+          <span *ngIf="notification.urgent" class="urgent-badge">Urgent</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,46 @@
+<i class="fas fa-bell" (click)="toggleDropdown()"></i>
+<div class="overlay" *ngIf="isDropdownOpen">
+  <div class="card notification-container">
+    <div class="card-header">
+      <div>
+        <h2>Notifications</h2>
+      </div>
+      <div class="header-actions">
+        <button class="btn icon-btn" (click)="toggleDropdown()">×</button>
+      </div>
+    </div>
+    <div class="card-body">
+      <div *ngIf="loading" class="loading">Loading...</div>
+      <div *ngIf="error" class="error">{{ error }}</div>
+
+      <h3>Recent Notifications</h3>
+      <div *ngIf="notifications.length === 0">No recent notifications.</div>
+      <div *ngFor="let notification of notifications" class="notification">
+        <div class="notification-content">
+          <div class="notification-title">
+            <strong>{{ notification.title }}</strong>
+          </div>
+          <p class="message">{{ notification.message }}</p>
+          <div class="notification-footer">
+            <span class="time">⏰ {{ notification.timeAgo }}</span>
+          </div>
+        </div>
+      </div>
+
+      <h3>My Notifications</h3>
+      <div *ngIf="myNotifications?.length === 0">No personal notifications.</div>
+      <div *ngFor="let notification of myNotifications" class="notification">
+        <div class="notification-content">
+          <div class="notification-title">
+            <strong>{{ notification.title }}</strong>
+          </div>
+          <p class="message">{{ notification.message }}</p>
+          <div class="notification-footer">
+            <span class="time">⏰ {{ notification.timeAgo }}</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

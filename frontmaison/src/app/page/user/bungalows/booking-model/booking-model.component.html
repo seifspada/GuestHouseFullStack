@@ -1,0 +1,213 @@
+<!-- SUCCESS STATE -->
+<div *ngIf="isBookingComplete" class="modal-overlay">
+  <div class="confirmation-content">
+    <div class="confirmation-icon">
+      <i class="fas fa-check"></i>
+    </div>
+    <h2 class="confirmation-title">Booking Confirmed!</h2>
+    <p class="confirmation-message">
+      Your reservation for {{ bungalow?.name || 'Unknown Bungalow' }} has been successfully submitted.
+    </p>
+    <p class="confirmation-subtext">
+      You will receive a confirmation email shortly.
+    </p>
+    <button class="submit-button" (click)="resetForm()">Close</button>
+  </div>
+</div>
+
+<!-- ERROR STATE -->
+<div *ngIf="errorMessage" class="modal-overlay">
+  <div class="confirmation-content error">
+    <div class="confirmation-icon">
+      <i class="fas fa-exclamation-triangle"></i>
+    </div>
+    <h2 class="confirmation-title">Booking Failed</h2>
+    <p class="confirmation-message">{{ errorMessage }}</p>
+    <button class="submit-button" (click)="resetForm()">Try Again</button>
+  </div>
+</div>
+
+<!-- FORM STATE -->
+<div *ngIf="!isBookingComplete && !errorMessage" class="modal-overlay">
+ma<div class="modal-content">
+    <!-- Header -->
+    <div class="modal-header">
+      <div>
+        <h1 class="modal-title">Book Your Stay</h1>
+        <p class="modal-subtitle">{{ bungalow?.name || 'Select a Bungalow' }}</p>
+      </div>
+      <button class="close-button" (click)="close.emit()">
+        <i class="fas fa-times close-icon"></i>
+      </button>
+    </div>
+
+    <div class="content">
+      <!-- Booking Form -->
+      <div class="form-section">
+        <div class="form-card">
+          <div class="form-header">
+            <h3 class="form-title">Booking Details</h3>
+          </div>
+          <div class="form-content">
+            <form [formGroup]="bookingForm" (ngSubmit)="onSubmit()">
+              <!-- Date Summary -->
+              <div class="date-grid">
+                <div class="form-group">
+                  <label class="form-label">Check-in</label>
+                  <div class="date-display">
+                    <i class="fas fa-calendar-alt icon"></i>
+                    <span>{{ checkInDate || 'Not selected' }}</span>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Check-out</label>
+                  <div class="date-display">
+                    <i class="fas fa-calendar-alt icon"></i>
+                    <span>{{ checkOutDate || 'Not selected' }}</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Guests -->
+              <div class="form-group">
+                <label class="form-label">
+                  <i class="fas fa-users icon"></i>
+                  Number of Guests
+                </label>
+                <div class="guest-grid">
+                  <div>
+                    <label for="adults" class="guest-label">Adults</label>
+                    <input
+                      id="adults"
+                      type="number"
+                      min="1"
+                      max="8"
+                      formControlName="numberOfAdults"
+                      class="form-input"
+                      required
+                    />
+                    <p class="guest-subtext">Age 13+</p>
+                    <div *ngIf="bookingForm.get('numberOfAdults')?.invalid && bookingForm.get('numberOfAdults')?.touched"
+                         class="error-message">
+                      Please enter a valid number of adults (1-8).
+                    </div>
+                  </div>
+                  <div>
+                    <label for="children" class="guest-label">Children</label>
+                    <input
+                      id="children"
+                      type="number"
+                      min="0"
+                      max="4"
+                      formControlName="numberOfChildren"
+                      class="form-input"
+                    />
+                    <p class="guest-subtext">Age 0-12</p>
+                    <div *ngIf="bookingForm.get('numberOfChildren')?.invalid && bookingForm.get('numberOfChildren')?.touched"
+                         class="error-message">
+                      Please enter a valid number of children (0-4).
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Special Requests -->
+              <div class="form-group">
+                <label for="description" class="form-label">
+                  Special Requests / Description
+                </label>
+                <textarea
+                  id="description"
+                  formControlName="description"
+                  placeholder="Optional - Help us make your stay perfect"
+                  class="form-textarea"
+                  rows="4"
+                ></textarea>
+              </div>
+
+              <!-- Submit -->
+              <button
+                type="submit"
+                class="submit-button"
+                [disabled]="isSubmitting || bookingForm.invalid || !checkInDate || !checkOutDate"
+              >
+                <span *ngIf="isSubmitting" class="spinner"></span>
+                {{ isSubmitting ? 'Processing Booking...' : 'Confirm Booking' }}
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Booking Summary -->
+      <div class="summary-section">
+        <div class="summary-card">
+          <img
+            [src]="getBungalowImage(bungalow)"
+            [alt]="bungalow?.name || 'Bungalow Image'"
+            class="summary-image"
+          />
+          <div class="summary-content">
+            <h3 class="summary-title">{{ bungalow?.name || 'Select a Bungalow' }}</h3>
+            <div class="location">
+              <i class="fas fa-map-pin icon"></i>
+              <span>Igloo Retreat Resort</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="summary-card">
+          <div class="summary-header">
+            <h3 class="summary-title">Booking Summary</h3>
+          </div>
+          <div class="summary-content">
+            <div class="summary-item">
+              <span class="summary-label">Check-in:</span>
+              <span class="summary-value">{{ checkInDate || 'Not selected' }}</span>
+            </div>
+            <div class="summary-item">
+              <span class="summary-label">Check-out:</span>
+              <span class="summary-value">{{ checkOutDate || 'Not selected' }}</span>
+            </div>
+            <div class="summary-item">
+              <span class="summary-label">Nights:</span>
+              <span class="summary-value">
+                {{ calculateNights() }} night{{ calculateNights() !== 1 ? 's' : '' }}
+              </span>
+            </div>
+            <div class="summary-item">
+              <span class="summary-label">Guests:</span>
+              <span class="summary-value">
+                {{ bookingForm.get('numberOfAdults')?.value || 1 }} adult{{ (bookingForm.get('numberOfAdults')?.value || 1) !== 1 ? 's' : '' }}
+                <ng-container *ngIf="bookingForm.get('numberOfChildren')?.value > 0">
+                  , {{ bookingForm.get('numberOfChildren')?.value }} child{{ bookingForm.get('numberOfChildren')?.value !== 1 ? 'ren' : '' }}
+                </ng-container>
+              </span>
+            </div>
+            <hr class="summary-divider" />
+            <div class="summary-item">
+              <span class="summary-label">
+                {{ bungalow?.price || 0 }}/night × {{ calculateNights() }}
+              </span>
+              <span class="summary-value">${{ totalPrice || 0 }}</span>
+            </div>
+            <div class="summary-item total">
+              <span class="summary-label">Total:</span>
+              <span class="summary-value">${{ totalPrice || 0 }}</span>
+            </div>
+
+            <div class="notes-section">
+              <h4 class="notes-title">Important Notes:</h4>
+              <ul class="notes-list">
+                <li>Free cancellation up to 24 hours before check-in</li>
+                <li>Check-in: 3:00 PM | Check-out: 11:00 AM</li>
+                <li>All taxes and fees included in total price</li>
+                <li>Confirmation will be sent to your email</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

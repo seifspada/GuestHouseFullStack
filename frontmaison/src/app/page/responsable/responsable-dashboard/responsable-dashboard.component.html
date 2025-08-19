@@ -1,0 +1,61 @@
+<div class="booking-container">
+  <div class="booking-header">
+    <h2>Spa & Wellness Session</h2>
+    <span>Maria Rodriguez - {{ currentDate }}</span>
+    <span class="current-time">Current Time {{ currentTime }}</span>
+  </div>
+
+  <div class="booking-content">
+    <div class="add-booking-section">
+      <h3>+ Add New Service Usage</h3>
+      <div class="guest-selection">
+        <label>Select Guest</label>
+        <mat-form-field>
+          <mat-select [(ngModel)]="selectedGuest">
+            <mat-option *ngFor="let guest of currentGuests" [value]="guest">
+              {{ guest.name }} - {{ guest.email }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div class="duration-selection">
+        <label>Service Duration</label>
+        <div class="duration-options">
+          <button mat-button *ngFor="let duration of durations" [class.selected]="selectedDuration === duration"
+                  (click)="selectedDuration = duration">
+            {{ duration }} min
+          </button>
+        </div>
+      </div>
+
+      <div class="notes-section">
+        <label>Notes (Optional)</label>
+        <textarea matInput [(ngModel)]="bookingNotes" placeholder="Special requests or notes..."></textarea>
+      </div>
+
+      <div class="price-section">
+        <p>Total Price: <span class="price">${{ calculatePrice() }}</span> ${{ pricePerHour }}/hour</p>
+      </div>
+
+      <button mat-raised-button color="primary" (click)="addBooking()" [disabled]="!selectedGuest || !selectedDuration">
+        + Add Service Usage for {{ currentTime }}
+      </button>
+    </div>
+
+    <div class="today-bookings-section">
+      <h3>Today's Bookings <span class="booking-count">({{ todaysBookings.length }} bookings)</span></h3>
+      <div class="bookings-list">
+        <div *ngFor="let booking of todaysBookings" class="booking-item">
+          <span>{{ booking.user.name }} - {{ booking.user.email }}</span>
+          <div class="booking-details">
+            <span class="price">${{ booking.price }}</span>
+            <span>{{ booking.usageTime | date:'shortTime' }}</span>
+            <span>{{ booking.duration }} min</span>
+            <span *ngIf="booking.notes">Note: {{ booking.notes }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

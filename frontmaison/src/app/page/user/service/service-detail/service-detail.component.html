@@ -1,0 +1,116 @@
+<div class="modal-overlay" *ngIf="service; else noService">
+  <div class="modal-content">
+    <div class="header">
+      <div>
+        <h1>{{ service.name || 'Unnamed Service' }}</h1>
+        <div class="header-info">
+          <span class="price">{{ service.price ? (service.price + ' dt') : 'Not specified' }}</span>
+          <span class="type">{{ service.type || 'Not specified' }}</span>
+          <div class="hours">
+            <i class="fas fa-clock"></i>
+            <span>{{ service.duration || 'Not specified' }}</span>
+          </div>
+        </div>
+      </div>
+      <button class="close-button" (click)="closeDetails()">
+        <fa-icon [icon]="faTimes"></fa-icon>
+      </button>
+    </div>
+
+    <div class="content-grid">
+      <div class="gallery-section">
+        <div class="image-container">
+          <img
+            [src]="serviceImages[currentImageIndex]"
+            [alt]="(service.name || 'Service') + ' - Image ' + (currentImageIndex + 1)"
+            class="main-image"
+          />
+          <button class="nav-button prev-button" (click)="prevImage()">
+            <i class="fas fa-chevron-left"></i>
+          </button>
+          <button class="nav-button next-button" (click)="nextImage()">
+            <i class="fas fa-chevron-right"></i>
+          </button>
+          <div class="image-counter">
+            {{ currentImageIndex + 1 }} / {{ serviceImages.length }}
+          </div>
+        </div>
+        <div class="thumbnails">
+          <img
+            *ngFor="let image of serviceImages; let i = index"
+            [src]="image"
+            [alt]="(service.name || 'Service') + ' view ' + (i + 1)"
+            class="thumbnail"
+            [ngClass]="{ 'active': i === currentImageIndex }"
+            (click)="setImageIndex(i)"
+          />
+        </div>
+        <div class="description-section">
+          <h3>Service Description</h3>
+          <p>{{ service.description || 'No description available' }}</p>
+          <h4>Location</h4>
+          <div class="environment">
+            <i class="fas fa-map-pin"></i>
+            <p>{{ service.location || 'Not specified' }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-section">
+        <div class="card">
+          <div class="card-content">
+            <h3>Quick Info</h3>
+            <div class="info-item">
+              <div class="info-label">
+                <i class="fas fa-clock"></i>
+                <span>Duration</span>
+              </div>
+              <span class="info-value">{{ service.duration || 'Not specified' }}</span>
+            </div>
+            <div class="info-item">
+              <div class="info-label">
+                <i class="fas fa-users"></i>
+                <span>Minimum Participants</span>
+              </div>
+              <span class="info-value">{{ service.minParticipants || 'Not specified' }}</span>
+            </div>
+            <div class="info-item">
+              <div class="info-label">
+                <i class="fas fa-child"></i>
+                <span>Minimum Age</span>
+              </div>
+              <span class="info-value">{{ service.minAge || 'Not specified' }}</span>
+            </div>
+            <div class="info-item">
+              <div class="info-label">
+                <i class="fas fa-map-pin"></i>
+                <span>Location</span>
+              </div>
+              <span class="info-value">{{ service.location || 'Not specified' }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="footer-grid">
+        <div class="footer-info">
+          <p>Start Time: {{ service.startTime || 'Not specified' }}</p>
+          <p>End Time: {{ service.endTime || 'Not specified' }}</p>
+          <p>Status: {{ service.isActive ? 'Active' : 'Inactive' }}</p>
+          <button class="close-gallery-button" (click)="closeDetails()">Close Gallery</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #noService>
+  <div class="no-service-message">
+    <p>No service details available.</p>
+    <button class="close-button" (click)="closeDetails()" aria-label="Close">
+      <fa-icon [icon]="faTimes"></fa-icon>
+    </button>
+  </div>
+</ng-template>

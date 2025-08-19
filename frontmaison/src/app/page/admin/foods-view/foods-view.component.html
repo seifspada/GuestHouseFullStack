@@ -1,0 +1,85 @@
+<div class="food-container">
+  <div *ngIf="error" class="error-message">
+    {{ error }}
+  </div>
+  <div *ngIf="!error && foods.length === 0" class="empty-message">
+    No active food items available. Add a new item to get started!
+  </div>
+  <div class="header">
+    <h1>Food Management</h1>
+    <button class="add-button" (click)="openAddFood()">
+      <i class="fas fa-plus mr-2"></i> Add Food Item
+    </button>
+  </div>
+
+  <app-food-view-add
+    *ngIf="selectedAddFood && !isUpdateMode"
+    (close)="closeAddFood()"
+  ></app-food-view-add>
+
+  <app-food-view-update
+    *ngIf="selectedAddFood && isUpdateMode"
+    [food]="selectedFood"
+    (close)="closeAddFood()"
+  ></app-food-view-update>
+
+  <app-food-details
+    *ngIf="showFoodDetails"
+    [foodId]="selectedFood?._id ?? null"
+    [food]="selectedFood"
+    (close)="closeFoodDetail()"
+  ></app-food-details>
+
+  <div *ngFor="let category of getCategories()" class="card">
+    <div class="card-header">
+      <div class="card-header-content">
+        <div class="category-info">
+          <div class="category-icon">{{ getCategoryIcon(category) }}</div>
+          <div>
+            <h2 class="category-title">{{ category }}</h2>
+            <p class="category-description">{{ getCategoryDescription(category) }}</p>
+          </div>
+        </div>
+        <div class="category-time">
+          <i class="fas fa-clock"></i>
+          <span>{{ getCategoryTime(category) }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="card-content">
+      <div class="food-grid">
+        <div *ngFor="let food of getFoodsByCategory(category)" class="food-card">
+          <div class="food-image-container">
+            <img
+              [src]="getFoodImage(food)"
+              [alt]="food.name"
+              class="food-image"
+            />
+            <span class="price">${{ food.price.toFixed(2) }}</span>
+          </div>
+          <div class="food-content">
+            <h3 class="food-title">{{ food.name }}</h3>
+            <p class="food-description">{{ food.description }}</p>
+            <div class="spice-level">
+              <span class="label">Spice Level:</span>
+              <span *ngFor="let i of [0,1,2,3,4]" class="star">
+                <i class="fas fa-star" [ngClass]="{'filled': i < (food.spiceLevel || 0)}"></i>
+              </span>
+            </div>
+            <div class="food-actions">
+              <button class="view-button" (click)="openFoodDetail(food)">
+                <i class="fas fa-eye mr-2"></i> View
+              </button>
+              <button class="update-button" (click)="openUpdateFood(food)">
+                <i class="fas fa-pencil-alt mr-2"></i> Update
+              </button>
+              <button class="delete-button" (click)="deleteFood(food)">
+                <i class="fas fa-trash-alt mr-2"></i> Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

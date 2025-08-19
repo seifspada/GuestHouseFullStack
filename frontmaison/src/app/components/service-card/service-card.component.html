@@ -1,0 +1,38 @@
+<div class="activity-card">
+  <div class="image-container">
+    <img [src]="getServiceImage(service)" [alt]="service.name" class="activity-image" />
+    <div class="price-box">
+      <div class="price">{{ service.price }} dt</div>
+    </div>
+  </div>
+
+  <div class="card-header">
+    <h3 class="activity-title">{{ service.name }}</h3>
+    <p class="duration">Duration: {{ service.duration }}</p>
+  </div>
+
+  <div class="card-content">
+    <p class="description">{{ service.description }}</p>
+  </div>
+
+  <div class="card-footer">
+    <div class="hours">
+      <fa-icon [icon]="faClock" class="clock-icon"></fa-icon>
+      <span>Hours: {{ formatHours(service.startTime, service.endTime) }}</span>
+    </div>
+
+    <div class="button-group">
+      
+      <button class="view-button" (click)="openServiceDetail(service)">
+        <i class="fas fa-eye mr-2"></i> View
+      </button>
+      <button class="update-button" (click)="openUpdateService(service)">
+        <i class="fas fa-pencil-alt mr-2"></i> Update
+      </button>
+      <button class="delete-button" (click)="deleteService(service)">
+        <i class="fas fa-trash-alt mr-2"></i> Delete
+      </button>
+    </div>
+  
+  </div>
+</div>

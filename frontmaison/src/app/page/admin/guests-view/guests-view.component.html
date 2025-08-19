@@ -1,0 +1,375 @@
+<div class="guests-container">
+  <div class="header">
+    <h2 class="header-title">Guest & Responsable Management</h2>
+    <div class="header-actions">
+      <button class="export-button">
+        <i class="fas fa-download button-icon"></i>
+        Export
+      </button>
+      <button
+        *ngIf="activeTab === 'guests'"
+        (click)="toggleAddGuestModal(true)"
+        class="add-button"
+      >
+        <i class="fas fa-plus button-icon"></i>
+        Add Guest
+      </button>
+      <button
+        *ngIf="activeTab === 'responsables'"
+        (click)="toggleAddResponsableModal(true)"
+        class="add-button"
+      >
+        <i class="fas fa-plus button-icon"></i>
+        Add Responsable
+      </button>
+    </div>
+  </div>
+
+  <!-- Tab Navigation -->
+  <div class="tabs-container">
+    <button
+      class="tab-button"
+      [ngClass]="{'tab-active': activeTab === 'guests'}"
+      (click)="setActiveTab('guests')"
+    >
+      <i class="fas fa-users tab-icon"></i>
+      Guests
+    </button>
+    <button
+      class="tab-button"
+      [ngClass]="{'tab-active': activeTab === 'responsables'}"
+      (click)="setActiveTab('responsables')"
+    >
+      <i class="fas fa-user tab-icon"></i>
+      Responsables
+    </button>
+  </div>
+
+  <!-- Guests Tab -->
+  <div *ngIf="activeTab === 'guests'" class="guests-grid">
+    <!-- Guest List -->
+    <div class="guest-list">
+      <div class="card">
+        <div class="card-header">
+          <div class="flex-between">
+            <h3 class="card-title">Guests ({{ filteredGuests.length }})</h3>
+            <span class="current-badge">
+              {{ currentGuestsCount }} Current
+            </span>
+          </div>
+          <div class="filter-section">
+            <div class="search-container">
+              <i class="fas fa-search search-icon"></i>
+              <input
+                type="text"
+                placeholder="Search guests..."
+                [(ngModel)]="searchTerm"
+                class="search-input"
+              />
+            </div>
+            <div class="filter-buttons">
+              <button
+                *ngFor="let filter of filterOptions"
+                class="filter-button"
+                [ngClass]="{'filter-active': guestFilter === filter}"
+                (click)="setGuestFilter(filter)"
+              >
+                {{ filter | titlecase }}
+              </button>
+            </div>
+            <input
+              *ngIf="guestFilter === 'specific'"
+              type="text"
+              placeholder="Enter guest name..."
+              [(ngModel)]="specificGuestName"
+              class="filter-input"
+            />
+          </div>
+        </div>
+        <div class="card-content">
+          <div class="guest-scroll">
+            <div
+              *ngFor="let guest of filteredGuests"
+              class="guest-item"
+              [ngClass]="{'guest-selected': selectedGuest?.id === guest.id}"
+              (click)="selectGuest(guest)"
+            >
+              <div class="guest-item-content">
+                <div class="avatar-container">
+                  <ng-container *ngIf="guest.avatar; else noAvatar">
+                    <img [src]="guest.avatar" [alt]="guest.name" class="avatar-image" />
+                  </ng-container>
+                  <ng-template #noAvatar>
+                    <span class="avatar-placeholder">{{ guest.name.charAt(0) }}</span>
+                  </ng-template>
+                </div>
+                <div class="guest-info">
+                  <div class="flex-between">
+                    <p class="guest-name">{{ guest.name }}</p>
+                    <span class="status-badge" [ngClass]="{'status-current': guest.isCurrentGuest, 'status-past': !guest.isCurrentGuest}">
+                      {{ guest.isCurrentGuest ? 'Current' : 'Past' }}
+                    </span>
+                  </div>
+                  <p class="guest-email">{{ guest.email }}</p>
+                  <div class="guest-stats">
+                    <span>{{ guest.totalBookings }} bookings</span>
+                    <span>${{ guest.totalSpent }}</span>
+                    <div class="rating">
+                      <i class="fas fa-star rating-icon"></i>
+                      <span>{{ guest.averageRating }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Guest Details -->
+    <div class="guest-details">
+      <div class="card">
+        <ng-container *ngIf="selectedGuest; else noGuestSelected">
+          <div class="card-header">
+            <h3 class="card-title">Guest Profile</h3>
+          </div>
+          <div class="card-content">
+            <div class="profile-header">
+              <div class="profile-info">
+                <div class="avatar-container large">
+                  <ng-container *ngIf="selectedGuest.avatar; else noAvatarLarge">
+                    <img [src]="selectedGuest.avatar" [alt]="selectedGuest.name" class="avatar-image" />
+                  </ng-container>
+                  <ng-template #noAvatarLarge>
+                    <span class="avatar-placeholder large">{{ selectedGuest.name.charAt(0) }}</span>
+                  </ng-template>
+                </div>
+                <div>
+                  <h3 class="profile-name">{{ selectedGuest.name }}</h3>
+                  <p class="profile-email">{{ selectedGuest.email }}</p>
+                  <div class="profile-details">
+                    <div class="detail-item">
+                      <i class="fas fa-phone detail-icon"></i>
+                      {{ selectedGuest.phone }}
+                    </div>
+                    <div class="detail-item">
+                      <i class="fas fa-map-pin detail-icon"></i>
+                      {{ selectedGuest.country }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <span class="status-badge" [ngClass]="{'status-current': selectedGuest.isCurrentGuest, 'status-past': !selectedGuest.isCurrentGuest}">
+                {{ selectedGuest.isCurrentGuest ? 'Current Guest' : 'Past Guest' }}
+              </span>
+            </div>
+
+            <!-- Stats -->
+            <div class="stats-section">
+              <div class="stat-item">
+                <p class="stat-value">{{ selectedGuest.totalBookings }}</p>
+                <p class="stat-label">Total Bookings</p>
+              </div>
+              <div class="stat-item">
+                <p class="stat-value">${{ selectedGuest.totalSpent }}</p>
+                <p class="stat-label">Total Spent</p>
+              </div>
+              <div class="stat-item">
+                <div class="rating">
+                  <i class="fas fa-star rating-icon"></i>
+                  <span class="stat-value">{{ selectedGuest.averageRating }}</span>
+                </div>
+                <p class="stat-label">Avg Rating</p>
+              </div>
+              <div class="stat-item">
+                <p class="stat-value">{{ selectedGuest.lastVisit }}</p>
+                <p class="stat-label">Last Visit</p>
+              </div>
+            </div>
+
+            <!-- Preferences -->
+            <div class="preferences-section">
+              <h4 class="section-title">Preferences</h4>
+              <div class="preferences-grid">
+                <div>
+                  <p class="preference-label">Preferred Room Type</p>
+                  <p class="preference-value">{{ selectedGuest.preferences.roomType }}</p>
+                </div>
+                <div>
+                  <p class="preference-label">Dietary Requirements</p>
+                  <div class="dietary-tags">
+                    <span *ngFor="let diet of selectedGuest.preferences.dietary" class="dietary-tag">
+                      {{ diet }}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <ng-template #noGuestSelected>
+          <div class="card-header">
+            <h3 class="card-title">Guest Profile</h3>
+          </div>
+          <div class="card-content no-selection">
+            <i class="fas fa-user no-selection-icon"></i>
+            <h3 class="no-selection-title">Select a Guest</h3>
+            <p class="no-selection-text">
+              Choose a guest from the list to view their profile and manage their information.
+            </p>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+
+  <!-- Responsables Tab -->
+  <div *ngIf="activeTab === 'responsables'" class="responsables-grid">
+    <div *ngFor="let responsable of responsables" class="card">
+      <div class="card-header">
+        <div class="flex-between">
+          <div>
+            <h3 class="card-title">{{ responsable.name }}</h3>
+            <p class="service-name">{{ responsable.serviceName }}</p>
+          </div>
+          <span class="bookings-badge">
+            {{ responsable.serviceBookings.length }} bookings
+          </span>
+        </div>
+      </div>
+      <div class="card-content">
+        <div class="responsable-details">
+          <div classgb=class="detail-item">
+            <i class="fas fa-envelope detail-icon"></i>
+            <span class="truncate">{{ responsable.email }}</span>
+          </div>
+          <div class="detail-item">
+            <i class="fas fa-phone detail-icon"></i>
+            {{ responsable.phone }}
+          </div>
+          <div class="detail-item">
+            <i class="fas fa-running detail-icon"></i>
+            {{ responsable.serviceName }}
+          </div>
+        </div>
+        <div class="bookings-section">
+          <h4 class="section-title">Recent Service Bookings</h4>
+          <div *ngIf="responsable.serviceBookings.length === 0" class="no-bookings">
+            No bookings yet
+          </div>
+          <div *ngIf="responsable.serviceBookings.length > 0" class="bookings-list">
+            <div *ngFor="let booking of responsable.serviceBookings" class="booking-item">
+              <div class="booking-header">
+                <span class="booking-guest">{{ booking.guestName }}</span>
+                <span class="booking-price">${{ booking.price }}</span>
+              </div>
+              <div class="booking-details">
+                <span>{{ booking.date }} • {{ booking.time }}</span>
+                <span>{{ booking.duration
+
+}} min</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="revenue-section">
+          <span class="revenue-label">Total Revenue:</span>
+          <span class="revenue-value">${{ getTotalRevenue(responsable) }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Guest Modal -->
+  <div *ngIf="showAddGuest" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Add New Guest</h3>
+        <button (click)="toggleAddGuestModal(false)" class="close-button">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">Full Name *</label>
+          <input type="text" placeholder="Full Name" [(ngModel)]="newGuest.name" class="modal-input" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email Address *</label>
+          <input type="email" placeholder="Email Address" [(ngModel)]="newGuest.email" class="modal-input" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Phone Number</label>
+          <input type="text" placeholder="Phone Number" [(ngModel)]="newGuest.phone" class="modal-input" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Country</label>
+          <input type="text" placeholder="Country" [(ngModel)]="newGuest.country" class="modal-input" />
+        </div>
+        <div class="checkbox-item">
+          <input type="checkbox" id="currentGuest" [(ngModel)]="newGuest.isCurrentGuest" class="checkbox" />
+          <label for="currentGuest" class="checkbox-label">Current Guest</label>
+        </div>
+        <div class="modal-actions">
+          <button (click)="toggleAddGuestModal(false)" class="cancel-button">Cancel</button>
+          <button (click)="handleAddGuest()" class="add-button">Add Guest</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Responsable Modal -->
+  <div *ngIf="showAddResponsable" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Add New Responsable</h3>
+        <button (click)="toggleAddResponsableModal(false)" class="close-button">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">Full Name *</label>
+          <input
+            type="text"
+            placeholder="Responsable name"
+            [(ngModel)]="newResponsable.name"
+            class="modal-input"
+          />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email Address *</label>
+          <input
+            type="email"
+            placeholder="email@example.com"
+            [(ngModel)]="newResponsable.email"
+            class="modal-input"
+          />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Phone Number</label>
+          <input
+            type="text"
+            placeholder="+1-555-000-0000"
+            [(ngModel)]="newResponsable.phone"
+            class="modal-input"
+          />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Service Name *</label>
+          <input
+            type="text"
+            placeholder="e.g., Spa & Wellness Session"
+            [(ngModel)]="newResponsable.serviceName"
+            class="modal-input"
+          />
+        </div>
+        <div class="modal-actions">
+          <button (click)="toggleAddResponsableModal(false)" class="cancel-button">Cancel</button>
+          <button (click)="handleAddResponsable()" class="add-button">Add Responsable</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

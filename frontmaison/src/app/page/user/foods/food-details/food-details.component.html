@@ -1,0 +1,99 @@
+<div *ngIf="isOpen && food" class="food-modal">
+  <div class="modal-content">
+    <!-- Header -->
+    <div class="header">
+      <div>
+        <h1 class="food-name">{{ food.name }}</h1>
+        <div class="header-info">
+          <span class="food-price">${{ (food.price || 0).toFixed(2) }}</span>
+          <div class="prep-time">
+            <i class="fas fa-clock icon"></i>
+            <span>{{ food.preparationTime || 'Not specified' }}</span>
+          </div>
+        </div>
+      </div>
+      <button class="close-button" (click)="closeDetails()">
+        <i class="fas fa-times close-icon"></i>
+      </button>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content">
+      <!-- Image Gallery -->
+      <div class="gallery">
+        <!-- Main Image -->
+        <div class="main-image-container">
+          <img
+            [src]="foodImages[currentImageIndex]"
+            [alt]="food.name + ' - Image ' + (currentImageIndex + 1)"
+            class="main-image"
+          />
+          <button class="nav-button prev-button" (click)="prevImage()">
+            <i class="fas fa-chevron-left nav-icon"></i>
+          </button>
+          <button class="nav-button next-button" (click)="nextImage()">
+            <i class="fas fa-chevron-right nav-icon"></i>
+          </button>
+          <div class="image-counter">
+            {{ currentImageIndex + 1 }} / {{ foodImages.length }}
+          </div>
+        </div>
+
+        <!-- Thumbnails -->
+        <div class="thumbnail-grid">
+          <img
+            *ngFor="let image of foodImages; let i = index"
+            [src]="image"
+            [alt]="food.name + ' thumbnail ' + (i + 1)"
+            class="thumbnail"
+            [ngClass]="{ 'thumbnail-active': i === currentImageIndex }"
+            (click)="setImageIndex(i)"
+          />
+        </div>
+      </div>
+
+      <!-- Food Information -->
+      <div class="info">
+        <!-- Description -->
+        <div class="info-section">
+          <h3 class="section-title">Description</h3>
+          <p class="description">{{ food.description || 'No description available' }}</p>
+        </div>
+
+        <!-- Quick Info -->
+        <div class="quick-info-grid">
+          <div class="info-card">
+            <i class="fas fa-clock card-icon"></i>
+            <p class="card-title">Prep Time</p>
+            <p class="card-value">{{ food.preparationTime || 'Not specified' }}</p>
+          </div>
+        </div>
+
+        <!-- Spice Level -->
+        <div class="info-section">
+          <h3 class="section-title">Spice Level</h3>
+          <div class="spice-level">
+            <i
+              *ngFor="let level of [1, 2, 3, 4, 5]"
+              class="fas fa-star star-icon"
+              [ngClass]="level <= (food.spiceLevel || 0) ? 'star-active' : 'star-inactive'"
+            ></i>
+            <span class="spice-text">{{ getSpiceText(food.spiceLevel || 0) }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <div class="footer-info">
+        <p class="footer-text">Preparation Time: {{ food.preparationTime || 'Not specified' }}</p>
+        <p class="footer-text">Category: {{ food.category }}</p>
+        <p class="footer-text">Availability: {{ food.isAvailable ? 'Available' : 'Not Available' }}</p>
+      </div>
+      <button class="close-gallery-button" (click)="closeDetails()">
+        Close Gallery
+      </button>
+    </div>
+  </div>
+</div>

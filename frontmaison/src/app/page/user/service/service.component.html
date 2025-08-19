@@ -1,0 +1,80 @@
+<div class="service-page">
+  <div class="container">
+    <div class="header">
+      <h1>Outdoor Activities & Adventures</h1>
+      <p>
+        Immerse yourself in nature with our curated outdoor activities. From
+        peaceful bicycle tours to thrilling mountain adventures, discover
+        the beauty of our natural environment through guided experiences.
+      </p>
+    </div>
+
+    <div class="activities-grid">
+    <app-service-card-user
+        *ngFor="let service of services"
+        [service]="service"
+        (viewDetails)="openServiceDetail($event)">
+      </app-service-card-user>
+    </div>
+    <div class="info-grid">
+      <div class="info-card">
+        <h3>Booking Information</h3>
+        <div class="info-list">
+          <p>• Activities must be booked 24 hours in advance</p>
+          <p>• Weather conditions may affect outdoor activities</p>
+          <p>• Group discounts available for 6+ participants</p>
+          <p>• All equipment and safety gear included</p>
+          <p>• Professional guides for all activities</p>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <h3>Safety & Requirements</h3>
+        <div class="info-list">
+          <p>• Minimum age requirements vary by activity</p>
+          <p>• Health and fitness assessment may be required</p>
+          <p>• Travel insurance recommended</p>
+          <p>• Weather-appropriate clothing advised</p>
+          <p>• Emergency protocols in place for all activities</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="cta-section">
+      <div class="cta-grid">
+        <div class="cta-text">
+          <h2>Ready for Your Adventure?</h2>
+          <p>
+            Our activity coordinators are here to help you plan the perfect
+            outdoor experience. Contact us to book your preferred activities
+            and create unforgettable memories in our natural paradise.
+          </p>
+          <div class="contact-info">
+            <p><strong>Activity Desk:</strong> +1 (555) 123-4567</p>
+            <p><strong>Email:</strong> activities-retreat.com</p>
+            <p><strong>WhatsApp:</strong> +1 (555) 987-6543</p>
+          </div>
+        </div>
+        <div class="cta-buttons">
+          <h3>Book Multiple Activities</h3>
+          <button class="package-button">
+            Create Activity Package
+          </button>
+          <button class="guide-button">
+            Download Activity Guide
+          </button>
+          <p class="discount-text">
+            Save up to 20% when booking 3+ activities together!
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+<app-service-detail
+      *ngIf="selectedService"
+      [service]="selectedService"
+      (close)="closeServiceDetail()">
+    </app-service-detail>
+
+ 
+</div>

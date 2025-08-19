@@ -1,0 +1,452 @@
+<div *ngIf="isOpen" class="profile-modal">
+  <div class="modal-content">
+    <!-- Header -->
+    <div class="header">
+      <div class="header-container">
+        <div class="user-info">
+          <div class="avatar">
+            <i class="fas fa-user avatar-icon"></i>
+          </div>
+          <div class="user-details">
+            <h2 class="user-name">{{ profileData.firstName }} {{ profileData.lastName }}</h2>
+            <p class="guest-status">Guest since January 2023</p>
+          </div>
+        </div>
+        <button class="close-button" (click)="isOpen = false">
+          <i class="fas fa-times close-icon"></i>
+        </button>
+      </div>
+
+      <!-- Tab Navigation -->
+      <div class="tab-container">
+        <button
+          class="tab-button"
+          [ngClass]="activeTab === 'profile' ? 'tab-active' : 'tab-inactive'"
+          (click)="setActiveTab('profile')"
+        >
+          <i class="fas fa-user tab-icon"></i> Profile
+        </button>
+        <button
+          class="tab-button"
+          [ngClass]="activeTab === 'bookings' ? 'tab-active' : 'tab-inactive'"
+          (click)="setActiveTab('bookings')"
+        >
+          <i class="fas fa-calendar tab-icon"></i> Bookings
+        </button>
+        <button
+          class="tab-button"
+          [ngClass]="activeTab === 'reviews' ? 'tab-active' : 'tab-inactive'"
+          (click)="setActiveTab('reviews')"
+        >
+          <i class="fas fa-star tab-icon"></i> Reviews
+        </button>
+        <button
+          class="tab-button"
+          [ngClass]="activeTab === 'settings' ? 'tab-active' : 'tab-inactive'"
+          (click)="setActiveTab('settings')"
+        >
+          <i class="fas fa-cog tab-icon"></i> Settings
+        </button>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+      <ng-container *ngIf="activeTab === 'profile'">
+        <div class="section">
+          <!-- Profile Information -->
+          <div class="section-header">
+            <h3 class="section-title">Personal Information</h3>
+            <button
+              class="edit-button"
+              (click)="toggleEdit()"
+            >
+              <i class="fas" [ngClass]="isEditing ? 'fa-save' : 'fa-edit'"></i>
+              {{ isEditing ? 'Save Changes' : 'Edit Profile' }}
+            </button>
+          </div>
+
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="firstName" class="form-label">First Name</label>
+              <input
+                id="firstName"
+                [(ngModel)]="profileData.firstName"
+                [disabled]="!isEditing"
+                class="form-input"
+              />
+            </div>
+            <div class="form-group">
+              <label for="lastName" class="form-label">Last Name</label>
+              <input
+                id="lastName"
+                [(ngModel)]="profileData.lastName"
+                [disabled]="!isEditing"
+                class="form-input"
+              />
+            </div>
+            <div class="form-group">
+              <label for="email" class="form-label">
+                <i class="fas fa-envelope form-icon"></i> Email Address
+              </label>
+              <input
+                id="email"
+                type="email"
+                [(ngModel)]="profileData.email"
+                [disabled]="!isEditing"
+                class="form-input"
+              />
+            </div>
+            <div class="form-group">
+              <label for="phone" class="form-label">
+                <i class="fas fa-phone form-icon"></i> Phone Number
+              </label>
+              <input
+                id="phone"
+                [(ngModel)]="profileData.phone"
+                [disabled]="!isEditing"
+                class="form-input"
+              />
+            </div>
+            <div class="form-group form-group-full">
+              <label for="address" class="form-label">
+                <i class="fas fa-map-pin form-icon"></i> Address
+              </label>
+              <input
+                id="address"
+                [(ngModel)]="profileData.address"
+                [disabled]="!isEditing"
+                class="form-input"
+              />
+            </div>
+            <div class="form-group form-group-full">
+              <label for="bio" class="form-label">About Me</label>
+              <textarea
+                id="bio"
+                [(ngModel)]="profileData.bio"
+                [disabled]="!isEditing"
+                class="form-textarea"
+                rows="3"
+              ></textarea>
+            </div>
+          </div>
+
+          <!-- Statistics -->
+          <div class="stats-grid">
+            <div class="stat-card">
+              <i class="fas fa-calendar stat-icon"></i>
+              <h4 class="stat-value">12</h4>
+              <p class="stat-label">Total Bookings</p>
+            </div>
+            <div class="stat-card">
+              <i class="fas fa-star stat-icon star-icon"></i>
+              <h4 class="stat-value">4.8</h4>
+              <p class="stat-label">Average Rating</p>
+            </div>
+            <div class="stat-card">
+              <i class="fas fa-home stat-icon home-icon"></i>
+              <h4 class="stat-value">28</h4>
+              <p class="stat-label">Nights Stayed</p>
+            </div>
+            <div class="stat-card">
+              <i class="fas fa-shield-alt stat-icon shield-icon"></i>
+              <h4 class="stat-value">Gold</h4>
+              <p class="stat-label">Member Status</p>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+
+      <ng-container *ngIf="activeTab === 'bookings'">
+        <div class="section">
+          <h3 class="section-title">Booking History</h3>
+          <div class="booking-list">
+            <div *ngFor="let booking of bookingHistory" class="booking-card">
+              <div class="booking-details">
+                <div class="booking-info">
+                  <h4 class="booking-title">{{ booking.bungalow }}</h4>
+                  <div class="booking-grid">
+                    <div>
+                      <p class="booking-label">Check-in</p>
+                      <p>{{ booking.checkIn }}</p>
+                    </div>
+                    <div>
+                      <p class="booking-label">Check-out</p>
+                      <p>{{ booking.checkOut }}</p>
+                    </div>
+                    <div>
+                      <p class="booking-label">Total</p>
+                      <p class="booking-total">{{ booking.total }}</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="booking-status">
+                  <span
+                    class="status-badge"
+                    [ngClass]="{
+                      'status-completed': booking.status === 'Completed',
+                      'status-upcoming': booking.status === 'Upcoming',
+                      'status-other': booking.status !== 'Completed' && booking.status !== 'Upcoming'
+                    }"
+                  >
+                    {{ booking.status }}
+                  </span>
+                  <div *ngIf="booking.rating" class="rating-stars">
+                    <i
+                      *ngFor="let i of [1, 2, 3, 4, 5]"
+                      class="fas fa-star star-icon"
+                      [ngClass]="i <= booking.rating ? 'star-active' : 'star-inactive'"
+                    ></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+
+      <ng-container *ngIf="activeTab === 'reviews'">
+        <div class="section">
+          <div class="section-header">
+            <h3 class="section-title">My Reviews</h3>
+            <button class="action-button" (click)="toggleWriteReview()">
+              <i class="fas fa-star action-icon"></i> Write Review
+            </button>
+          </div>
+          <div class="review-list">
+            <div *ngIf="myReviews.length === 0" class="no-reviews">
+              <i class="fas fa-star no-reviews-icon"></i>
+              <h4 class="no-reviews-title">No reviews yet</h4>
+              <p class="no-reviews-text">Share your experiences to help other guests!</p>
+              <button class="action-button" (click)="toggleWriteReview()">
+                Write Your First Review
+              </button>
+            </div>
+            <div *ngFor="let review of myReviews" class="review-card">
+              <div class="review-header">
+                <div>
+                  <h4 class="review-title">{{ review.title }}</h4>
+                  <p class="review-service">
+                    {{ review.serviceType === 'accommodation' ? '🏠' : review.serviceType === 'dining' ? '🍽️' : '🎯' }}
+                    {{ review.serviceName }}
+                  </p>
+                  <div class="rating-stars">
+                    <i
+                      *ngFor="let i of [1, 2, 3, 4, 5]"
+                      class="fas fa-star star-icon"
+                      [ngClass]="i <= review.rating ? 'star-active' : 'star-inactive'"
+                    ></i>
+                  </div>
+                </div>
+                <div class="review-date">
+                  <p>{{ review.date }}</p>
+                </div>
+              </div>
+              <p class="review-comment">{{ review.comment }}</p>
+              <div class="category-grid">
+                <div class="category-item">
+                  <p class="category-label">Quality</p>
+                  <div class="rating-stars">
+                    <i
+                      *ngFor="let i of [1, 2, 3, 4, 5]"
+                      class="fas fa-star star-icon"
+                      [ngClass]="i <= review.categories.quality ? 'star-active' : 'star-inactive'"
+                    ></i>
+                  </div>
+                </div>
+                <div class="category-item">
+                  <p class="category-label">Service</p>
+                  <div class="rating-stars">
+                    <i
+                      *ngFor="let i of [1, 2, 3, 4, 5]"
+                      class="fas fa-star star-icon"
+                      [ngClass]="i <= review.categories.service ? 'star-active' : 'star-inactive'"
+                    ></i>
+                  </div>
+                </div>
+                <div class="category-item">
+                  <p class="category-label">Value</p>
+                  <div class="rating-stars">
+                    <i
+                      *ngFor="let i of [1, 2, 3, 4, 5]"
+                      class="fas fa-star star-icon"
+                      [ngClass]="i <= review.categories.value ? 'star-active' : 'star-inactive'"
+                    ></i>
+                  </div>
+                </div>
+                <div class="category-item">
+                  <p class="category-label">Ambiance</p>
+                  <div class="rating-stars">
+                    <i
+                      *ngFor="let i of [1, 2, 3, 4, 5]"
+                      class="fas fa-star star-icon"
+                      [ngClass]="i <= review.categories.ambiance ? 'star-active' : 'star-inactive'"
+                    ></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Write Review Modal -->
+          <div *ngIf="showWriteReview" class="review-modal">
+            <div class="review-modal-content">
+              <div class="review-modal-header">
+                <h2 class="review-modal-title">Write a Review</h2>
+                <button class="review-close-button" (click)="toggleWriteReview()">
+                  <i class="fas fa-times review-close-icon"></i>
+                </button>
+              </div>
+              <div class="review-form">
+                <div class="form-group">
+                  <label class="form-label">Service Type *</label>
+                  <select
+                    [(ngModel)]="newReview.serviceType"
+                    class="form-select"
+                  >
+                    <option value="accommodation">Accommodation</option>
+                    <option value="dining">Dining Experience</option>
+                    <option value="activity">Activities & Services</option>
+                    <option value="general">General Experience</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Service Name *</label>
+                  <input
+                    [(ngModel)]="newReview.serviceName"
+                    placeholder="e.g., Deluxe Garden Bungalow, Restaurant Experience, Spa Service"
+                    class="form-input"
+                  />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Overall Rating *</label>
+                  <div class="rating-container">
+                    <div class="rating-stars">
+                      <i
+                        *ngFor="let i of [1, 2, 3, 4, 5]"
+                        class="fas fa-star star-icon star-selectable"
+                        [ngClass]="i <= newReview.rating ? 'star-active' : 'star-inactive'"
+                        (click)="handleStarClick(i)"
+                      ></i>
+                    </div>
+                    <span class="rating-text">
+                      {{ newReview.rating > 0 ? newReview.rating + ' star' + (newReview.rating !== 1 ? 's' : '') : 'Select rating' }}
+                    </span>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Rate by Category *</label>
+                  <div class="category-rating-grid">
+                    <div *ngFor="let category of ['quality', 'service', 'value', 'ambiance']" class="category-rating-item">
+                      <span class="category-label">{{ category | titlecase }}</span>
+                      <div class="rating-stars">
+                       <!--- <i
+                          *ngFor="let i of [1, 2, 3, 4, 5]"
+                          class="fas fa-star star-icon star-selectable"
+                          [ngClass]="i <= newReview.categories[category] ? 'star-active' : 'star-inactive'"
+                          (click)="handleStarClick(i, category)"
+                        ></i>-->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Review Title *</label>
+                  <input
+                    [(ngModel)]="newReview.title"
+                    placeholder="Summarize your experience"
+                    class="form-input"
+                  />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Your Review *</label>
+                  <textarea
+                    [(ngModel)]="newReview.comment"
+                    placeholder="Share your experience in detail..."
+                    class="form-textarea review-textarea"
+                  ></textarea>
+                </div>
+                <div class="form-actions">
+                  <button class="cancel-button" (click)="toggleWriteReview()">
+                    Cancel
+                  </button>
+                  <button class="submit-button" (click)="handleSubmitReview()">
+                    Submit Review
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+
+      <ng-container *ngIf="activeTab === 'settings'">
+        <div class="section">
+          <h3 class="section-title">Account Settings</h3>
+          <div class="settings-card">
+            <div class="settings-header">
+              <h4 class="settings-title">Notification Preferences</h4>
+            </div>
+            <div class="settings-list">
+              <div class="setting-item">
+                <div>
+                  <p class="setting-label">Email Notifications</p>
+                  <p class="setting-description">Receive booking confirmations and updates</p>
+                </div>
+                <button
+                  class="toggle-button"
+                  [ngClass]="profileData.preferences.notifications ? 'toggle-active' : 'toggle-inactive'"
+                  (click)="handlePreferenceChange('notifications', !profileData.preferences.notifications)"
+                >
+                  {{ profileData.preferences.notifications ? 'On' : 'Off' }}
+                </button>
+              </div>
+              <div class="setting-item">
+                <div>
+                  <p class="setting-label">Newsletter</p>
+                  <p class="setting-description">Get special offers and travel tips</p>
+                </div>
+                <button
+                  class="toggle-button"
+                  [ngClass]="profileData.preferences.newsletter ? 'toggle-active' : 'toggle-inactive'"
+                  (click)="handlePreferenceChange('newsletter', !profileData.preferences.newsletter)"
+                >
+                  {{ profileData.preferences.newsletter ? 'On' : 'Off' }}
+                </button>
+              </div>
+              <div class="setting-item">
+                <div>
+                  <p class="setting-label">SMS Updates</p>
+                  <p class="setting-description">Receive text messages for urgent updates</p>
+                </div>
+                <button
+                  class="toggle-button"
+                  [ngClass]="profileData.preferences.smsUpdates ? 'toggle-active' : 'toggle-inactive'"
+                  (click)="handlePreferenceChange('smsUpdates', !profileData.preferences.smsUpdates)"
+                >
+                  {{ profileData.preferences.smsUpdates ? 'On' : 'Off' }}
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="settings-card">
+            <div class="settings-header">
+              <h4 class="settings-title">Account Actions</h4>
+            </div>
+            <div class="settings-list">
+              <button class="action-button action-button-full">
+                <i class="fas fa-camera action-icon"></i> Change Profile Picture
+              </button>
+              <button class="action-button action-button-full">
+                <i class="fas fa-shield-alt action-icon"></i> Change Password
+              </button>
+              <button class="action-button action-button-full action-button-danger">
+                <i class="fas fa-sign-out-alt action-icon"></i> Sign Out
+              </button>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>

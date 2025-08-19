@@ -1,0 +1,287 @@
+.service-page {
+  min-height: 100vh;
+  background-color: #ffffff;
+  padding: 4rem 1rem;
+}
+
+.container {
+  max-width: 72rem;
+  margin: 0 auto;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.header h1 {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: #203436;
+  margin-bottom: 1rem;
+}
+
+.header p {
+  font-size: 1.125rem;
+  color: #4b5563;
+  max-width: 48rem;
+  margin: 0 auto;
+  line-height: 1.5;
+}
+
+.activities-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+@media (min-width: 1024px) {
+  .activities-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  margin-top: 4rem;
+}
+
+@media (min-width: 768px) {
+  .info-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.info-card {
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.info-card h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #203436;
+  margin-bottom: 1rem;
+}
+
+.info-list p {
+  font-size: 0.875rem;
+  color: #4b5563;
+  margin-bottom: 0.75rem;
+}
+
+.cta-section {
+  background-color: #98ecba;
+  border-radius: 8px;
+  padding: 2rem;
+  margin-top: 3rem;
+}
+
+.cta-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+@media (min-width: 768px) {
+  .cta-grid {
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+  }
+}
+
+.cta-text h2 {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #203436;
+  margin-bottom: 1rem;
+}
+
+.cta-text p {
+  font-size: 1rem;
+  color: #1f2937;
+  margin-bottom: 1.5rem;
+}
+
+.contact-info p {
+  font-size: 0.875rem;
+  color: #1f2937;
+  margin-bottom: 0.5rem;
+}
+
+.contact-info strong {
+  font-weight: 600;
+}
+
+.cta-buttons {
+  text-align: center;
+}
+
+.cta-buttons h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #203436;
+  margin-bottom: 1rem;
+}
+
+.package-button,
+.guide-button {
+  display: block;
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  margin-bottom: 0.75rem;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.package-button {
+  background-color: #203436;
+  color: #ffffff;
+}
+
+.package-button:hover {
+  background-color: #86efac;
+  color: #203436;
+}
+
+.guide-button {
+  background-color: transparent;
+  border: 2px solid #203436;
+  color: #203436;
+}
+
+.guide-button:hover {
+  background-color: #203436;
+  color: #ffffff;
+}
+
+.discount-text {
+  font-size: 0.875rem;
+  color: #1f2937;
+  margin-top: 1rem;
+}
+
+.activity-card {
+  border: 1px solid #ddd;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s;
+  max-width: 400px;
+  margin: auto;
+
+  &:hover {
+    transform: translateY(-5px);
+  }
+}
+
+.image-container {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16/9;
+  overflow: hidden;
+
+  .activity-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .price-box {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    background-color: #2d8cff;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 14px;
+  }
+}
+
+.card-header {
+  padding: 12px 16px;
+  border-bottom: 1px solid #eee;
+
+  .activity-title {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  .duration {
+    font-size: 14px;
+    color: #666;
+  }
+}
+
+.card-content {
+  padding: 12px 16px;
+
+  .description {
+    font-size: 15px;
+    color: #333;
+  }
+}
+
+.card-footer {
+  padding: 12px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+
+  .hours {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: #555;
+
+    .clock-icon {
+      margin-right: 6px;
+    }
+  }
+
+  .button-group {
+    display: flex;
+    gap: 10px;
+
+    button {
+      padding: 6px 14px;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .view-button {
+      background-color: #2d8cff;
+      color: white;
+
+      &:hover {
+        background-color: #1c6cd4;
+      }
+    }
+
+    .delete-button {
+      background-color: #e74c3c;
+      color: white;
+
+      &:hover {
+        background-color: #c0392b;
+      }
+    }
+  }
+}

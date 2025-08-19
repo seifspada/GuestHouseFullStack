@@ -1,0 +1,31 @@
+<div class="container">
+  <div class="admin-header">
+    <div class="admin-title">
+      <h2>Admin Dashboard</h2>
+      <span>Igloo Retreat Management</span>
+    </div>
+
+    <div class="admin-actions">
+      <div class="notification">
+        <i class="fas fa-bell"></i> Notifications ({{ notificationCount }})
+      </div>
+      <div class="user-profile">
+        <div class="avatar">{{ userInitial }}</div>
+        <span>{{ userName }}</span>
+      </div>
+    </div>
+  </div>
+
+  <nav class="admin-navbar">
+    <a *ngFor="let item of navItems" 
+       class="nav-item" 
+       [class.active]="activeItem === item.id"
+       [routerLink]="item.route"
+       (click)="setActiveItem(item.id)">
+      <i [class]="item.icon"></i>
+      {{ item.label }}
+    </a>
+  </nav>
+</div>
+
+<router-outlet></router-outlet>

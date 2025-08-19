@@ -1,0 +1,41 @@
+<nav class="navbar navbar-expand-lg custom-navbar">
+  <div class="container-fluid">
+    <!-- 🔷 Logo -->
+    <a class="navbar-brand d-flex align-items-center" href="#">
+      <img src="./assets/logos/logo.png" alt="Logo" class="navbar-logo me-2" />
+    </a>
+    <!-- 🔷 Toggler (for mobile) -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <!-- 🔷 Navbar Links -->
+    <div class="collapse navbar-collapse" id="navbarMenu">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/home" routerLinkActive="active">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/bungalows" routerLinkActive="active">Bungalows</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/service" routerLinkActive="active">Service</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/foods" routerLinkActive="active">Foods</a>
+        </li>
+      </ul>
+      <!-- 🔷 Icons (right) -->
+      <div class="d-flex align-items-center gap-3 notification-container">
+        <a href="#" class="icon-link" (click)="onNotificationClick($event)">
+          <i class="fas fa-bell"></i>
+        </a>
+        <a href="#" class="icon-link" (click)="onProfileClick($event)">
+          <i class="fas fa-user-circle"></i>
+        </a>
+        <app-notifications [triggerToggle]="notificationToggleSignal"></app-notifications>
+        <app-profil [triggerToggle]="profileToggleSignal"></app-profil>
+      </div>
+    </div>
+  </div>
+</nav>
+<router-outlet></router-outlet>

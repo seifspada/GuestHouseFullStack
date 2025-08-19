@@ -1,0 +1,206 @@
+<form [formGroup]="serviceForm" (ngSubmit)="onSave()" class="modal-overlay">
+  <div class="modal-content">
+    <div class="header">
+      <div>
+        <input formControlName="title" class="header-title-input" placeholder="Service Title" />
+        <div class="header-info">
+          <input formControlName="price" class="price-input" placeholder="$0.00" />
+          <select formControlName="type" class="type-select">
+            <option value="Adventure">Adventure</option>
+            <option value="Relaxation">Relaxation</option>
+            <option value="Leisure">Leisure</option>
+          </select>
+          <select formControlName="difficulty" class="difficulty-select">
+            <option value="Easy">Easy</option>
+            <option value="Moderate">Moderate</option>
+            <option value="Hard">Hard</option>
+          </select>
+          <div class="hours">
+            <i class="fas fa-clock"></i>
+            <input formControlName="hours" class="hours-input" placeholder="Operating Hours" />
+          </div>
+        </div>
+      </div>
+      <button type="button" class="close-button" (click)="onClose()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <div class="content-grid">
+      <div class="gallery-section">
+        <div class="image-container">
+          <img
+            [src]="serviceImages[currentImageIndex]"
+            [alt]="serviceForm.get('title')?.value + ' - Image ' + (currentImageIndex + 1)"
+            class="main-image"
+          />
+          <button class="nav-button prev-button" (click)="prevImage()">
+            <i class="fas fa-chevron-left"></i>
+          </button>
+          <button class="nav-button next-button" (click)="nextImage()">
+            <i class="fas fa-chevron-right"></i>
+          </button>
+          <div class="image-counter">
+            {{ currentImageIndex + 1 }} / {{ serviceImages.length }}
+          </div>
+        </div>
+        <div class="image-upload">
+          <label for="image-upload" class="upload-button">
+            <i class="fas fa-upload mr-2"></i> Upload Image
+          </label>
+          <input id="image-upload" type="file" accept="image/*" (change)="handleImageUpload($event)" style="display: none;" />
+        </div>
+        <div class="thumbnails">
+          <img
+            *ngFor="let image of serviceImages; let i = index"
+            [src]="image"
+            [alt]="serviceForm.get('title')?.value + ' view ' + (i + 1)"
+            class="thumbnail"
+            [ngClass]="{ 'active': i === currentImageIndex }"
+            (click)="setImageIndex(i)"
+          />
+        </div>
+        <div class="description-section">
+          <h3>Activity Description</h3>
+          <textarea formControlName="fullDescription" class="description-textarea" placeholder="Enter full description"></textarea>
+          <h4>Environment & Location</h4>
+          <div class="environment">
+            <i class="fas fa-map-pin"></i>
+            <input formControlName="environment" class="environment-input" placeholder="Environment" />
+          </div>
+        </div>
+      </div>
+
+      <div class="info-section">
+        <div class="card">
+          <div class="card-content">
+            <h3>Quick Info</h3>
+            <div class="info-item">
+              <div class="info-label">
+                <i class="fas fa-clock"></i>
+                <span>Duration</span>
+              </div>
+              <input formControlName="duration" class="info-value-input" placeholder="Duration" />
+            </div>
+            <div class="info-item">
+              <div class="info-label">
+                <i class="fas fa-running"></i>
+                <span>Difficulty</span>
+              </div>
+              <select formControlName="difficulty" class="info-value-select">
+                <option value="Easy">Easy</option>
+                <option value="Moderate">Moderate</option>
+                <option value="Hard">Hard</option>
+              </select>
+            </div>
+            <div class="info-item">
+              <div class="info-label">
+                <i class="fas fa-users"></i>
+                <span>Group Size</span>
+              </div>
+              <input formControlName="groupSize" class="info-value-input" placeholder="Group Size" />
+            </div>
+            <div class="info-item">
+              <div class="info-label">
+                <i class="fas fa-map-pin"></i>
+                <span>Meeting Point</span>
+              </div>
+              <input formControlName="meetingPoint" class="info-value-input" placeholder="Meeting Point" />
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-content">
+            <h3>What's Included</h3>
+            <div *ngFor="let item of serviceForm.get('included')?.value; let i = index" class="list-item">
+              <span class="dot mint"></span>
+              <input [formControl]="getFormControl('included', i)" class="list-item-input" placeholder="Enter item" />
+              <button type="button" class="delete-button" (click)="removeFormArrayItem('included', i)">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+            <button type="button" class="add-item-button" (click)="addFormArrayItem('included')">
+              <i class="fas fa-plus mr-2"></i> Add Item
+            </button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-content">
+            <h3>Equipment & Gear</h3>
+            <div *ngFor="let item of serviceForm.get('equipment')?.value; let i = index" class="list-item">
+              <span class="dot green"></span>
+              <input [formControl]="getFormControl('equipment', i)" class="list-item-input" placeholder="Enter equipment" />
+              <button type="button" class="delete-button" (click)="removeFormArrayItem('equipment', i)">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+            <button type="button" class="add-item-button" (click)="addFormArrayItem('equipment')">
+              <i class="fas fa-plus mr-2"></i> Add Equipment
+            </button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-content">
+            <h3>Safety & Guidelines</h3>
+            <div *ngFor="let item of serviceForm.get('safetyInfo')?.value; let i = index" class="list-item">
+              <span class="dot blue"></span>
+              <input [formControl]="getFormControl('safetyInfo', i)" class="list-item-input" placeholder="Enter safety guideline" />
+              <button type="button" class="delete-button" (click)="removeFormArrayItem('safetyInfo', i)">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+            <button type="button" class="add-item-button" (click)="addFormArrayItem('safetyInfo')">
+              <i class="fas fa-plus mr-2"></i> Add Guideline
+            </button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-content">
+            <h3>What to Bring</h3>
+            <div *ngFor="let item of serviceForm.get('whatToBring')?.value; let i = index" class="list-item">
+              <span class="dot orange"></span>
+              <input [formControl]="getFormControl('whatToBring', i)" class="list-item-input" placeholder="Enter item" />
+              <button type="button" class="delete-button" (click)="removeFormArrayItem('whatToBring', i)">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+            <button type="button" class="add-item-button" (click)="addFormArrayItem('whatToBring')">
+              <i class="fas fa-plus mr-2"></i> Add Item
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="footer-grid">
+        <div>
+          <h4>Cancellation Policy</h4>
+          <div *ngFor="let policy of serviceForm.get('cancellationPolicy')?.value; let i = index" class="list-item">
+            <span class="dot"></span>
+            <input [formControl]="getFormControl('cancellationPolicy', i)" class="list-item-input" placeholder="Enter policy" />
+            <button type="button" class="delete-button" (click)="removeFormArrayItem('cancellationPolicy', i)">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <button type="button" class="add-item-button" (click)="addFormArrayItem('cancellationPolicy')">
+            <i class="fas fa-plus mr-2"></i> Add Policy
+          </button>
+        </div>
+        <div class="footer-info">
+          <p>Operating Hours: <input formControlName="hours" class="footer-input" placeholder="Operating Hours" /></p>
+          <p>Age Requirement: <input formControlName="ageRequirements" class="footer-input" placeholder="Age Requirements" /></p>
+          <p>Fitness Level: <input formControlName="fitnessLevel" class="footer-input" placeholder="Fitness Level" /></p>
+          <div class="button-group">
+            <button type="submit" class="save-button">Save Changes</button>
+            <button type="button" class="close-gallery-button" (click)="onClose()">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

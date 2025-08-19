@@ -1,0 +1,45 @@
+<!-- bungalows-container.component.html -->
+<div class="bungalows-container">
+  <div class="header">
+    <h1>Bungalow Management</h1>
+    <button class="add-button" (click)="openAddBungalow()">
+      <i class="fas fa-plus mr-2"></i> Add Bungalow
+    </button>
+  </div>
+  <div class="bungalows-grid">
+   <app-bungalow-card
+    *ngFor="let bungalow of bungalows"
+    [bungalow]="bungalow"
+    (viewDetails)="openBungalowDetail($event)"
+    (update)="openUpdateBungalow($event)"
+    (delete)="deleteBungalow($event)">
+  </app-bungalow-card>
+  
+  </div>
+  <app-bungalow-detail
+      *ngIf="selectedBungalow"
+      [bungalow]="selectedBungalow"
+      (close)="closeBungalowDetail()">
+    </app-bungalow-detail>
+  <!--
+  <app-bungalow-detail
+      *ngIf="selectedBungalow"
+      [bungalow]="selectedBungalow"
+      (close)="closeBungalowDetail()"
+    ></app-bungalow-detail>
+
+
+   <app-bungalow-view-update
+  *ngIf="selectedUpdateBungalow"
+  [bungalow]="selectedUpdateBungalow"
+  (close)="closeUpdateBungalow()"
+></app-bungalow-view-update>
+-->
+   <app-bungalow-view-add
+  *ngIf="selectedAddBungalow"
+  
+></app-bungalow-view-add>
+
+ 
+
+</div>

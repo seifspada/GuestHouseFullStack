@@ -1,0 +1,482 @@
+:host {
+  display: block;
+  font-family: 'Segoe UI', sans-serif;
+  color: #333;
+  padding: 20px;
+}
+
+.check-in-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.header-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #000000;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.search-container {
+  position: relative;
+  width: 256px;
+}
+
+.search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #9ca3af;
+  width: 16px;
+  height: 16px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 8px 12px 8px 36px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #333;
+}
+
+.search-input::placeholder {
+  color: #9ca3af;
+}
+
+.arrival-badge {
+  background-color: #98ECBA;
+  color: #203436;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.tabs-container {
+  display: flex;
+  gap: 4px;
+  background-color: #ffffff;
+  padding: 4px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  margin-bottom: 24px;
+}
+
+.tab-button {
+  flex: 1;
+  padding: 8px 16px;
+  border-radius: 6px;
+  background-color: transparent;
+  color: #4b5563;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.tab-button:hover {
+  color: #000000;
+}
+
+.tab-active {
+  background-color: #98ECBA;
+  color: #203436;
+}
+
+.tab-icon {
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+.user-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.user-card {
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.3s;
+}
+
+.user-card:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.border-expected {
+  border-color: #bfdbfe;
+}
+
+.border-arrived {
+  border-color: #bbf7d0;
+}
+
+.border-late {
+  border-color: #fef08a;
+}
+
+.user-card-content {
+  padding: 24px;
+}
+
+.user-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+@media (min-width: 1024px) {
+  .user-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.user-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.user-name {
+  font-size: 18px;
+  font-weight: 600;
+  color: #000000;
+  display: flex;
+  align-items: center;
+}
+
+.status-badge {
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.status-expected {
+  background-color: #bfdbfe;
+  color: #1e40af;
+}
+
+.status-arrived {
+  background-color: #bbf7d0;
+  color: #166534;
+}
+
+.status-late {
+  background-color: #fef08a;
+  color: #854d0e;
+}
+
+.status-no-show {
+  background-color: #fecaca;
+  color: #991b1b;
+}
+
+.status-default {
+  background-color: #e5e7eb;
+  color: #4b5563;
+}
+
+.status-icon-expected {
+  color: #3b82f6;
+}
+
+.status-icon-arrived {
+  color: #22c55e;
+}
+
+.status-icon-late {
+  color: #eab308;
+}
+
+.status-icon-no-show {
+  color: #ef4444;
+}
+
+.status-icon-default {
+  color: #6b7280;
+}
+
+.user-details {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 14px;
+  color: #4b5563;
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+}
+
+.detail-icon {
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+}
+
+.booking-info {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.section-title {
+  font-size: 16px;
+  font-weight: 500;
+  color: #000000;
+  margin-bottom: 8px;
+}
+
+.booking-details {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 14px;
+  color: #4b5563;
+}
+
+.special-requests {
+  margin-top: 8px;
+}
+
+.section-subtitle {
+  font-size: 14px;
+  font-weight: 500;
+  color: #000000;
+}
+
+.request-text {
+  font-size: 14px;
+  color: #4b5563;
+}
+
+.check-in-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.status-details {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.status-item {
+  display: flex;
+  justify-content: space-between;
+}
+
+.status-label {
+  color: #4b5563;
+}
+
+.status-value {
+  font-weight: 500;
+  color: #000000;
+}
+
+.status-arrived {
+  color: #16a34a;
+}
+
+.status-notes {
+  font-size: 14px;
+  color: #1f2937;
+  margin-top: 4px;
+}
+
+.action-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.form-label {
+  font-size: 12px;
+  color: #4b5563;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.form-input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 12px;
+  color: #333;
+}
+
+.form-input::placeholder {
+  color: #9ca3af;
+}
+
+.form-textarea {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 12px;
+  color: #333;
+  resize: vertical;
+}
+
+.checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.checkbox {
+  width: 16px;
+  height: 16px;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+}
+
+.checkbox-label {
+  font-size: 12px;
+  color: #4b5563;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.confirm-button {
+  flex: 1;
+  padding: 8px;
+  background-color: #16a34a;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.confirm-button:hover {
+  background-color: #15803d;
+}
+
+.late-button {
+  flex: 1;
+  padding: 8px;
+  background-color: transparent;
+  border: 1px solid #eab308;
+  color: #eab308;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.late-button:hover {
+  background-color: #fef9c3;
+}
+
+.button-icon {
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+.checked-in-message {
+  text-align: center;
+  padding: 16px;
+  background-color: #f0fdf4;
+  border-radius: 8px;
+}
+
+.checked-in-icon {
+  width: 32px;
+  height: 32px;
+  color: #16a34a;
+  margin: 0 auto 8px;
+}
+
+.checked-in-text {
+  font-size: 14px;
+  font-weight: 500;
+  color: #166534;
+}
+
+.checked-in-time {
+  font-size: 12px;
+  color: #16a34a;
+}
+
+.no-users-card {
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background-color: #ffffff;
+}
+
+.no-users-content {
+  padding: 32px;
+  text-align: center;
+}
+
+.no-users-icon {
+  width: 48px;
+  height: 48px;
+  color: #d1d5db;
+  margin: 0 auto 16px;
+}
+
+.no-users-title {
+  font-size: 18px;
+  font-weight: 500;
+  color: #000000;
+  margin-bottom: 8px;
+}
+
+.no-users-text {
+  font-size: 14px;
+  color: #4b5563;
+}
